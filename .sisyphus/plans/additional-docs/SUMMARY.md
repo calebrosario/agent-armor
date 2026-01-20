@@ -129,8 +129,8 @@ The Docker Sandboxes planning documentation has been comprehensively enhanced wi
 ### Phase Breakdown
 
 | Phase | Name | Duration | Team | Items | Effort | Deliverable |
-|-------|------|---------|--------|---------|------------|
-| **0** | MVP | 2-3 mo | 5 devs | 12 items | 60 days | Alpha release |
+|-------|------|---------|--------|---------|------------|-------|
+| **0** | MVP | 2-3 mo | 5 devs | 12 items | 60 days | Alpha release | 
 | **1** | Stability | 1.5-2 mo | 4 devs | 10 items | 35 days | Beta release |
 | **2** | Efficiency | 1.5-2 mo | 4 devs | 8 items | 30 days | v1.0 stable |
 | **3** | Collaboration | 1-1.5 mo | 3 devs | 7 items | 20 days | v1.1 release |
@@ -156,36 +156,66 @@ The Docker Sandboxes planning documentation has been comprehensively enhanced wi
 
 ### From Edge Cases
 ✅ Concurrency & Locking System (optimistic locks, conflict detection)
+
 ✅ Resource Exhaustion Handling (adaptive limits, emergency checkpoints)
+
 ✅ State Corruption Recovery (validation, checksum, log recovery)
+
 ✅ Git Branch Naming (unique names, atomic creation)
+
+
 ✅ Network Isolation Enforcement (whitelist, bridge networks)
+
 ✅ Orphaned Container Detection (background cleanup, 24h timeout)
+
 ✅ MCP Crash Handling (health monitoring, auto-restart)
+
 ✅ Checkpoint Storage Management (auto-compress, cleanup)
+
 ✅ Parallel Ultrawork Conflicts (submodule isolation, merging)
+
 ✅ Session Interruption Handling (auto-detach, checkpoint)
+
 ✅ Docker Compatibility Layer (version check, fallback)
+
 ✅ Workspace Path Handling (sanitization, quoting)
+
 ✅ Large Filesystem Optimization (incremental, async)
+
 ✅ Submodule Conflict Detection (unique naming, checking)
+
 ✅ Risk-Based Checkpoint Refinement (configurable, fine-tuning)
 
 ### From Architecture Improvements
+
 ✅ Event-Driven Architecture (event bus, middleware, async)
+
 ✅ Distributed Registry (PostgreSQL, Redis, hybrid)
+
 ✅ Container Image Caching (cache layer, version management)
+
 ✅ Adaptive Resource Limits (dynamic allocation, historical)
+
 ✅ Intelligent Checkpointing (ML-based prediction)
+
 ✅ Task Dependency Graph (topological sort, parallel execution)
+
 ✅ Real-Time Monitoring (WebSocket, live dashboard)
+
 ✅ Task Templates (pre-configured, team standards)
+
 ✅ Incremental Checkpoint Merging (rsync, compression)
+
 ✅ Task Federation (cross-instance, collaborative)
+
 ✅ Security Policy Engine (policy framework, compliance)
+
 ✅ Task Analytics (dashboard, insights)
+
 ✅ Lazy Container Creation (on-demand, paused idle)
+
 ✅ Task Version Control (tags, metadata)
+
 ✅ Plugin System (extensible, community)
 
 ---
@@ -236,42 +266,76 @@ The Docker Sandboxes planning documentation has been comprehensively enhanced wi
 
 ### Original v2.0 Criteria (20 items) - All Met ✅
 
+
 ✅ Task-based container lifecycle
+
 ✅ Multi-layer memory persistence
+
 ✅ Session persistence
+
 ✅ Agent flexibility
+
 ✅ Checkpointing
+
 ✅ Git branch automation
+
 ✅ Plan.md automation
+
 ✅ Submodule management
+
 ✅ Task memory git-tracked
+
 ✅ Safety mechanisms
+
 ✅ Ultrawork mode
+
 ✅ Parallel subtask execution
+
 ✅ Subtask integration
+
 ✅ Configurable locking
+
 ✅ User commands (15)
+
 ✅ Task registry (SQLite)
+
 ✅ Error recovery strategies
+
 ✅ Test coverage >80%
+
 ✅ Comprehensive documentation
+
 ✅ State machine diagrams
 
 ### v2.1 Additional Criteria (15 items) - NEW ✅
 
+
 ✅ Edge case handling (15 cases with solutions)
+
 ✅ Concurrency support (optimistic locking)
+
 ✅ State reliability (validation, checksum, recovery)
+
 ✅ Resource management (adaptive limits, monitoring)
+
 ✅ Security enhancements (network isolation, policy engine)
+
 ✅ Performance optimization (image caching, incremental checkpoints)
+
 ✅ Architecture foundation (event-driven system)
+
 ✅ Implementation roadmap (5 phases, 49 features)
+
 ✅ Priority matrix (comprehensive prioritization)
+
 ✅ Team allocation (phase-based sizing)
+
 ✅ Dependency graph (feature dependencies mapped)
+
 ✅ Timeline estimation (11-15 months total)
+
 ✅ Risk assessment (expanded to 10 risks)
+
 ✅ Documentation organization (modular structure)
 
 **Total Success Criteria**: 35 items (20 existing + 15 new) ✅
