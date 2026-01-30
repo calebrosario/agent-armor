@@ -3,7 +3,7 @@
 
 import { describe, test, expect, beforeEach, jest } from '@jest/globals';
 import { createContainerSafetyEnforcerHook } from '../../src/hooks/safety-hooks/container-enforcer';
-import { createResourceMonitorHook } from '../../src/hooks/safety-hooks/resource-monitor';
+import { createResourceLimitMonitorHook } from '../../src/hooks/safety-hooks/resource-monitor';
 import { createIsolationCheckerHook } from '../../src/hooks/safety-hooks/isolation-checker';
 
 describe('Safety Hooks', () => {
@@ -37,12 +37,12 @@ describe('Safety Hooks', () => {
 
   describe('Resource Monitor Hook', () => {
     test('should create hook function', () => {
-      const hook = createResourceMonitorHook();
+      const hook = createResourceLimitMonitorHook();
       expect(typeof hook).toBe('function');
     });
 
     test('should execute hook with taskId and agentId', async () => {
-      const hook = createResourceMonitorHook();
+      const hook = createResourceLimitMonitorHook();
       await hook('task-456', 'agent-1');
       // Hook monitors resources internally
       expect(true).toBe(true);

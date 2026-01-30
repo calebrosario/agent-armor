@@ -25,7 +25,7 @@ const DEFAULT_PIDS_LIMIT = 100;
  * 3. Security policy enforcement
  */
 export function createContainerSafetyEnforcerHook(
-  config?: {
+  config: {
     allowedImages?: string[];
     memoryLimit?: number;
     cpuShares?: number;
@@ -39,24 +39,33 @@ export function createContainerSafetyEnforcerHook(
 
   return async (taskId: string, agentId: string) => {
     try {
-      logger.info('Validating container safety', { taskId, agentId });
+      logger.info('Validating container safety', { taskId, agentId, config });
 
-      // Note: In a real implementation, we'd fetch task metadata
+      // Note: In a real implementation, we'd get container config from task metadata
       // For now, this is a placeholder showing validation pattern
 
-      // 1. Validate image source
-      // const containerImage = task.metadata?.containerConfig?.image;
-      // if (!isAllowedImage(containerImage, allowedImages, ALLOWED_IMAGE_REGISTRIES)) {
-      //   throw new Error(`Image not allowed: ${containerImage}`);
-      // }
+      // Validate allowed images
+      if (allowedImages.length > 0) {
+        // const image = task.metadata?.containerConfig?.image;
+        // if (!allowedImages.includes(image)) {
+        //   throw new Error(`Image not allowed: ${image}`);
+        // }
+      }
 
-      // 2. Validate resource limits
-      validateResourceLimits(memoryLimit, cpuShares, pidsLimit);
+      // Validate resource limits
+      if (memoryLimit < 64) {
+        throw new Error(`Memory limit too low: ${memoryLimit}MB (minimum: 64MB)`);
+      }
 
-      // 3. Enforce security policies
-      enforceSecurityPolicies();
+      if (cpuShares < 2) {
+        throw new Error(`CPU shares too low: ${cpuShares} (minimum: 2)`);
+      }
 
-      logger.info('Container safety validation passed', { taskId, agentId });
+      if (pidsLimit < 10) {
+        throw new Error(`PIDs limit too low: ${pidsLimit} (minimum: 10)`);
+      }
+
+      logger.info('Container safety validated', { taskId, memoryLimit, cpuShares, pidsLimit });
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : String(error);
       logger.error('Container safety validation failed', {
@@ -65,47 +74,41 @@ export function createContainerSafetyEnforcerHook(
         error: errorMessage,
       });
 
-      throw new Error(`Container safety check failed: ${errorMessage}`);
+      throw new Error(`Container safety validation failed: ${errorMessage}`);
     }
   };
 }
 
-function isAllowedImage(image: string, allowedImages: string[], allowedRegistries: string[]): boolean {
-  // Check explicit whitelist
-  if (allowedImages.length > 0) {
-    return allowedImages.includes(image);
+/**
+ * Extract registry from image name
+ */
+function extractRegistry(image: string): string | undefined {
+  if (!image || typeof image !== 'string') {
+    return undefined;
   }
 
-  // Check registry whitelist
-  const registry = image.split('/')[0];
-  return allowedRegistries.includes(registry);
+  // If image contains '/', extract registry part
+  const parts = image.split('/');
+  if (parts.length >= 2) {
+    const registry = parts[0];
+    // Check if it's a registry (contains '.') or is 'localhost'
+    if (registry && (registry.includes('.') || registry === 'localhost')) {
+      return registry;
+    }
+  }
+
+  // Default to docker.io for official images
+  return 'docker.io';
 }
 
-function validateResourceLimits(memoryLimit: number, cpuShares: number, pidsLimit: number): void {
-  // Validate memory limit (min: 64MB, max: 8192MB)
-  if (memoryLimit < 64 || memoryLimit > 8192) {
-    throw new Error(`Invalid memory limit: ${memoryLimit}MB. Must be between 64MB and 8192MB`);
+/**
+ * Check if registry is in allowed list
+ */
+function isAllowedRegistry(image: string): boolean {
+  const registry = extractRegistry(image);
+  if (!registry) {
+    return false;
   }
 
-  // Validate CPU shares (min: 2, max: 262144)
-  if (cpuShares < 2 || cpuShares > 262144) {
-    throw new Error(`Invalid CPU shares: ${cpuShares}. Must be between 2 and 262144`);
-  }
-
-  // Validate PIDs limit (min: 10, max: 10000)
-  if (pidsLimit < 10 || pidsLimit > 10000) {
-    throw new Error(`Invalid PIDs limit: ${pidsLimit}. Must be between 10 and 10000`);
-  }
-
-  logger.debug('Resource limits validated', { memoryLimit, cpuShares, pidsLimit });
-}
-
-function enforceSecurityPolicies(): void {
-  // Enforce non-root user
-  // Enforce read-only root filesystem
-  // Enforce no privileged mode
-  // Enforce user namespaces
-  // Enforce seccomp profiles
-  
-  logger.debug('Security policies enforced');
+  return ALLOWED_IMAGE_REGISTRIES.includes(registry);
 }

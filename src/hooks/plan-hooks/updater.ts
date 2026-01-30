@@ -4,7 +4,8 @@
 import { promises as fs } from 'fs';
 import { join } from 'path';
 import { logger } from '../../util/logger';
-import { AfterTaskCompleteHook, TaskResult } from '../task-lifecycle';
+import { AfterTaskCompleteHook } from '../task-lifecycle';
+import type { TaskResult } from '../../types/lifecycle';
 
 /**
  * Update Plan.md on task completion
