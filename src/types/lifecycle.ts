@@ -9,6 +9,8 @@ export interface TaskConfig {
 
 export interface TaskResult {
   success: boolean;
+  status?: 'success' | 'error';
   data?: any;
   error?: string;
+  message?: string;
 }
