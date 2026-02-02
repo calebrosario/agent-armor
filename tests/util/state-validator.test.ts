@@ -1,4 +1,4 @@
-import { StateValidator } from '../state-validator';
+import { StateValidator } from '../../src/util/state-validator';
 import { writeFileSync, unlinkSync, existsSync } from 'fs';
 import { tmpdir } from 'os';
 import { join } from 'path';
