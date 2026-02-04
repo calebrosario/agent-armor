@@ -3,20 +3,16 @@
 
 import { describe, it, expect, beforeEach, afterEach } from '@jest/globals';
 import { dockerHelper } from '../util/docker-helper';
-import { dockerHelper } from '../util/docker-helper';
 import { VolumeManager, getVolumeManager } from '../../src/docker/volume-manager';
 import { OpenCodeError } from '../../src/types';
 
+import Docker from 'dockerode';
 describe('VolumeManager', () => {
   let docker: Docker;
   let volumeManager: VolumeManager;
   if (!dockerHelper.isAvailable()) {
-  let docker: Docker;
-  if (!dockerHelper.isAvailable()) {
     return;
   }
-  }
-
   const testTaskId = 'test-task-123';
 
   beforeEach(async () => {

@@ -1,26 +1,12 @@
 // Network Manager Tests
-import { dockerHelper } from '../util/docker-helper';
 // Week 11, Task 11.9: Network Manager test suite
 
 import { describe, it, expect, beforeEach, afterEach, jest } from '@jest/globals';
 import { dockerHelper } from '../util/docker-helper';
 import { NetworkManager } from '../../src/docker/network-manager';
 import { OpenCodeError, ErrorCode } from '../../src/types';
-// Mock Dockerode
-jest.mock('dockerode');
-import { describe, it, expect, beforeEach, afterEach, jest } from '@jest/globals';
-import { dockerHelper } from '../util/docker-helper';
-import { NetworkManager } from '../../src/docker/network-manager';
-import { OpenCodeError, ErrorCode } from '../../src/types';
-import { NetworkManager } from '../../src/docker/network-manager';
-import { dockerHelper } from '../util/docker-helper';
-import { OpenCodeError, ErrorCode } from '../../src/types';
 import Dockerode from 'dockerode';
-  if (!dockerHelper.isAvailable()) {
-    return;
-  }
 
-// Mock Dockerode
 jest.mock('dockerode');
 
 describe('NetworkManager', () => {
@@ -28,7 +14,6 @@ describe('NetworkManager', () => {
     return;
   }
   let networkManager: NetworkManager;
-  let mockDocker: jest.Mocked<Dockerode>;
   let mockNetwork: any;
 
   beforeEach(() => {
@@ -36,7 +21,7 @@ describe('NetworkManager', () => {
     (NetworkManager as any).instance = undefined;
 
     // Create mock Docker instance
-    mockDocker = new Dockerode() as jest.Mocked<Dockerode>;
+    const mockDocker = jest.mocked(Dockerode, true);
     mockNetwork = {
       connect: jest.fn().mockResolvedValue(undefined),
       disconnect: jest.fn().mockResolvedValue(undefined),
@@ -567,7 +552,6 @@ jest.mock('dockerode');
 
 describe('NetworkManager', () => {
   let networkManager: NetworkManager;
-  let mockDocker: jest.Mocked<Dockerode>;
   let mockNetwork: any;
 
   beforeEach(() => {
@@ -575,7 +559,7 @@ describe('NetworkManager', () => {
     (NetworkManager as any).instance = undefined;
 
     // Create mock Docker instance
-    mockDocker = new Dockerode() as jest.Mocked<Dockerode>;
+    const mockDocker = jest.mocked(Dockerode, true);
     mockNetwork = {
       connect: jest.fn().mockResolvedValue(undefined),
       disconnect: jest.fn().mockResolvedValue(undefined),
@@ -1093,9 +1077,3 @@ describe('NetworkManager', () => {
     });
   });
 });
-import { dockerHelper } from '../util/docker-helper';
-
-describe('NetworkManager', () => {
-  if (!dockerHelper.isAvailable()) {
-    return;
-  }
