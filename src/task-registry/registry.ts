@@ -6,13 +6,7 @@ import { logger } from "../util/logger";
 import { Task, TaskStatus, OpenCodeError, TaskFilters } from "../types";
 import { DatabaseManager } from "../persistence/database";
 import * as schema from "../persistence/schema";
-
-export interface TaskFilters {
-  status?: TaskStatus;
-  owner?: string;
-  limit?: number;
-  offset?: number;
-}
+import type { TaskSelect } from "../persistence/schema";
 
 export class TaskRegistry {
   private static instance: TaskRegistry;
@@ -67,7 +61,7 @@ export class TaskRegistry {
     }
 
     try {
-      const [newTask] = await this.db
+      const results = await this.db
         .insert(schema.tasks)
         .values({
           id: task.id,
@@ -79,6 +73,15 @@ export class TaskRegistry {
           updatedAt: new Date(),
         })
         .returning();
+
+      const newTask = results[0] ? this.rowToTask(results[0]) : null;
+
+      if (!newTask) {
+        throw new OpenCodeError(
+          "TASK_CREATE_FAILED",
+          "Failed to create task: no result returned",
+        );
+      }
 
       logger.info("Task created", {
         taskId: task.id,
