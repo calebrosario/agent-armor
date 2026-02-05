@@ -100,23 +100,24 @@ export class ResourceMonitor {
       totalReservedPids + (requested.pidsLimit || CONTAINER_PIDS_LIMIT);
 
     // Check memory limits (leave 20% buffer)
-    const memoryLimit = currentUsage.memory.limit * 0.8;
-    if (projectedMemory > memoryLimit) {
+    const buffer = currentUsage.memory.limit * 0.8;
+    if (projectedMemory > buffer) {
       logger.warn("Resource limit exceeded: memory", {
         requested: requested.memoryMB,
         projected: projectedMemory,
-        limit: memoryLimit,
+        buffer: buffer,
         current: currentUsage.memory.used,
       });
       return false;
     }
 
     // Check PID limits (leave 10% buffer)
-    const pidLimit = totalReservedPids * 0.9;
+    const pidLimit = currentUsage.pids.limit * 0.9;
     if (projectedPids > pidLimit) {
       logger.warn("Resource limit exceeded: PIDs", {
         requested: requested.pidsLimit,
         projected: projectedPids,
+        buffer: pidLimit - totalReservedPids,
         limit: pidLimit,
         current: currentUsage.pids.used,
       });
