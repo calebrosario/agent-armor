@@ -46,8 +46,11 @@ describe("Component Integration Tests", () => {
     }
   });
 
-  afterAll(async () => {
+  afterEach(async () => {
     await rollbackTestTransaction();
+  });
+
+  afterAll(async () => {
     try {
       await taskLifecycle.deleteTask(testTaskId);
     } catch {

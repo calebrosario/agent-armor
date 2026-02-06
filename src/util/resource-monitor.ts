@@ -77,12 +77,6 @@ export class ResourceMonitor {
     const currentUsage = await this.getSystemResourceUsage();
     const totalContainers = this.resourceUsage.size;
 
-    console.log("[DEBUG] checkResourceLimits:", {
-      requested,
-      totalContainers,
-      memoryLimit: currentUsage.memory.limit,
-    });
-
     // Calculate projected usage if this container is added
     // Use reserved resources (sum of container limits) instead of current usage
     let totalReservedMemory = 0;
@@ -197,8 +191,16 @@ export class ResourceMonitor {
     // Update usage data
     if (usage.memory) {
       currentUsage.memory.used = usage.memory.used;
-      currentUsage.memory.percentage =
-        (usage.memory.used / currentUsage.memory.limit) * 100;
+      if (currentUsage.memory.limit > 0) {
+        currentUsage.memory.percentage =
+          (usage.memory.used / currentUsage.memory.limit) * 100;
+      } else {
+        currentUsage.memory.percentage = 0;
+        logger.warn("Container has zero memory limit", {
+          containerId,
+          used: usage.memory.used,
+        });
+      }
     }
 
     if (usage.cpu) {
@@ -207,14 +209,30 @@ export class ResourceMonitor {
 
     if (usage.pids) {
       currentUsage.pids.used = usage.pids.used;
-      currentUsage.pids.percentage =
-        (usage.pids.used / currentUsage.pids.limit) * 100;
+      if (currentUsage.pids.limit > 0) {
+        currentUsage.pids.percentage =
+          (usage.pids.used / currentUsage.pids.limit) * 100;
+      } else {
+        currentUsage.pids.percentage = 0;
+        logger.warn("Container has zero PID limit", {
+          containerId,
+          used: usage.pids.used,
+        });
+      }
     }
 
     if (usage.disk) {
       currentUsage.disk.used = usage.disk.used;
-      currentUsage.disk.percentage =
-        (usage.disk.used / currentUsage.disk.limit) * 100;
+      if (currentUsage.disk.limit > 0) {
+        currentUsage.disk.percentage =
+          (usage.disk.used / currentUsage.disk.limit) * 100;
+      } else {
+        currentUsage.disk.percentage = 0;
+        logger.warn("Container has zero disk limit", {
+          containerId,
+          used: usage.disk.used,
+        });
+      }
     }
 
     // Check for alerts
