@@ -16,6 +16,13 @@ import { lockManager } from "../../src/util/lock-manager";
 import { taskLifecycleHooks } from "../../src/hooks/task-lifecycle";
 import { TOOL_DEFINITIONS } from "../../src/mcp/tools";
 import { dockerHelper } from "../../src/util/docker-helper";
+import {
+  setupTestDatabase,
+  cleanupTestDatabase,
+  beginTestTransaction,
+  rollbackTestTransaction,
+  createTestTask,
+} from "../util/test-db-helpers";
 
 describe("Component Integration Tests", () => {
   if (!dockerHelper.isAvailable()) {
@@ -25,10 +32,12 @@ describe("Component Integration Tests", () => {
   const testAgentId = "integration-test-agent";
 
   beforeAll(async () => {
+    await setupTestDatabase();
     await taskRegistry.initialize();
   });
 
   beforeEach(async () => {
+    await beginTestTransaction();
     try {
       await taskRegistry.getById(testTaskId);
       await taskLifecycle.deleteTask(testTaskId);
@@ -38,11 +47,13 @@ describe("Component Integration Tests", () => {
   });
 
   afterAll(async () => {
+    await rollbackTestTransaction();
     try {
       await taskLifecycle.deleteTask(testTaskId);
     } catch {
       // Ignore
     }
+    await cleanupTestDatabase();
   });
 
   describe("Integration 1: TaskLifecycle + TaskRegistry", () => {

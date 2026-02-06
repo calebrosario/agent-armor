@@ -7,6 +7,13 @@ import { taskRegistry } from "../../src/task-registry/registry";
 import { multiLayerPersistence } from "../../src/persistence/multi-layer";
 import { taskLifecycleHooks } from "../../src/hooks/task-lifecycle";
 import { dockerHelper } from "../../src/util/docker-helper";
+import {
+  setupTestDatabase,
+  cleanupTestDatabase,
+  beginTestTransaction,
+  rollbackTestTransaction,
+  createTestTask,
+} from "../util/test-db-helpers";
 
 describe("End-to-End Workflow Tests", () => {
   if (!dockerHelper.isAvailable()) {
@@ -14,10 +21,12 @@ describe("End-to-End Workflow Tests", () => {
   }
 
   beforeAll(async () => {
+    await setupTestDatabase();
     await taskRegistry.initialize();
   });
 
   afterAll(async () => {
+    await cleanupTestDatabase();
     // Cleanup all test tasks
     try {
       await taskLifecycle.deleteTask("e2e-task-lifecycle");
