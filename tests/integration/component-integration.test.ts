@@ -16,6 +16,7 @@ import { lockManager } from "../../src/util/lock-manager";
 import { taskLifecycleHooks } from "../../src/hooks/task-lifecycle";
 import { TOOL_DEFINITIONS } from "../../src/mcp/tools";
 import { dockerHelper } from "../../src/util/docker-helper";
+import { DatabaseManager } from "../../src/persistence/database";
 import {
   setupTestDatabase,
   cleanupTestDatabase,
@@ -50,6 +51,7 @@ describe("Component Integration Tests", () => {
   const testAgentId = "integration-test-agent";
 
   beforeAll(async () => {
+    await DatabaseManager.getInstance().initialize();
     await setupTestDatabase();
     await taskRegistry.initialize();
   });
