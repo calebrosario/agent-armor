@@ -16,9 +16,10 @@ import {
 } from "../util/test-db-helpers";
 
 describe("End-to-End Workflow Tests", () => {
-  if (!dockerHelper.isAvailable()) {
-    return;
-  }
+  // Bypassing Docker availability check for mock testing
+  // if (!dockerHelper.isAvailable()) {
+  //   return;
+  // }
 
   beforeAll(async () => {
     await setupTestDatabase();

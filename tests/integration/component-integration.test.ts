@@ -25,9 +25,10 @@ import {
 } from "../util/test-db-helpers";
 
 describe("Component Integration Tests", () => {
-  if (!dockerHelper.isAvailable()) {
-    return;
-  }
+  // Bypassing Docker availability check for mock testing
+  // if (!dockerHelper.isAvailable()) {
+  //   return;
+  // }
   const testTaskId = "integration-test-task";
   const testAgentId = "integration-test-agent";
 
