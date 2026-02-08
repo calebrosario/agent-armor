@@ -20,8 +20,11 @@ describe("Phase 1 Integration Tests", () => {
     it("should retrieve registered tool", () => {
       const tool = server.getTool("create_task_sandbox");
       expect(tool).toBeDefined();
-      expect(tool!.name).toBe("create_task_sandbox");
-      expect(tool!.description).toContain("Docker container");
+
+      if (tool) {
+        expect(tool.name).toBe("create_task_sandbox");
+        expect(tool.description).toContain("Docker container");
+      }
     });
 
     it("should return undefined for non-existent tool", () => {
@@ -39,10 +42,12 @@ describe("Phase 1 Integration Tests", () => {
       const tool = server.getTool("create_task_sandbox");
       expect(tool).toBeDefined();
 
-      const result = await tool!.execute({ taskId: "test-task" });
-      expect(result).toBeDefined();
-      expect(result.status).toBe("ok");
-      expect(result.taskId).toBe("test-task");
+      if (tool) {
+        const result = await tool.execute({ taskId: "test-task" });
+        expect(result).toBeDefined();
+        expect(result.status).toBe("ok");
+        expect(result.taskId).toBe("test-task");
+      }
     });
   });
 
