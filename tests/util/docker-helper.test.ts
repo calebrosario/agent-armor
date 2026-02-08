@@ -61,6 +61,14 @@ describe("DockerHelper", () => {
       expect(process.env.DOCKER_SOCKET).toBe("/Users/.docker/run/docker.sock");
     });
 
+    it("should detect Linux Docker socket paths", () => {
+      // Mock platform to linux and mock fs.existsSync
+      Object.defineProperty(process, "platform", {
+        value: "linux",
+        writable: true,
+        configurable: true,
+      });
+
       const helper = DockerHelper.getInstance();
       const socket = helper.detectSocket();
 
@@ -180,9 +188,4 @@ describe("DockerHelper", () => {
       expect(dockerHelper).toBeInstanceOf(DockerHelper);
     });
   });
-
-  describe("dockerHelper singleton export", () => {
-    it("should export singleton instance", () => {
-      expect(dockerHelper).toBeInstanceOf(DockerHelper);
-    });
-  });
+});

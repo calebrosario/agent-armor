@@ -15,7 +15,30 @@ import { NetworkManager } from "../../src/docker/network-manager";
 import { OpenCodeError } from "../../src/types";
 import Dockerode from "dockerode";
 
-jest.mock("dockerode");
+jest.mock("dockerode", () => {
+  return function mockDockerode() {
+    return {
+      createNetwork: jest.fn().mockResolvedValue({ id: "mock-network-id" }),
+      getNetwork: jest.fn().mockReturnValue({
+        connect: jest.fn().mockResolvedValue(undefined),
+        disconnect: jest.fn().mockResolvedValue(undefined),
+        remove: jest.fn().mockResolvedValue(undefined),
+        inspect: jest.fn().mockResolvedValue({
+          Id: "mock-network-id",
+          Name: "mock-network",
+          Driver: "bridge",
+          Scope: "local",
+          Internal: true,
+          Labels: {},
+          Created: Date.now() / 1000,
+          Containers: {},
+        }),
+      }),
+      listNetworks: jest.fn().mockResolvedValue([]),
+      info: jest.fn().mockResolvedValue({}),
+    };
+  };
+});
 
 describe("NetworkManager", () => {
   if (!dockerHelper.isAvailable()) {
@@ -26,8 +49,12 @@ describe("NetworkManager", () => {
   let mockDocker: any;
 
   beforeEach(() => {
-    // Clear singleton instance
+    // Clear singleton instances
     (NetworkManager as any).instance = undefined;
+
+    // Import and clear NetworkIsolator singleton
+    const { NetworkIsolator } = require("../../src/util/network-isolator");
+    (NetworkIsolator as any).instance = undefined;
 
     // Skip TypeScript mock type errors - jest.mocked() returns never type
     // Tests will still run at runtime despite type errors
