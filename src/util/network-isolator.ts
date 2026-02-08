@@ -510,6 +510,3 @@ export class NetworkIsolator {
     }
   }
 }
-
-// Export singleton instance
-export const networkIsolator = NetworkIsolator.getInstance();

@@ -15,29 +15,10 @@ import { NetworkManager } from "../../src/docker/network-manager";
 import { OpenCodeError } from "../../src/types";
 import Dockerode from "dockerode";
 
+let mockDockerInstance: any = {};
+
 jest.mock("dockerode", () => {
-  return function mockDockerode() {
-    return {
-      createNetwork: jest.fn().mockResolvedValue({ id: "mock-network-id" }),
-      getNetwork: jest.fn().mockReturnValue({
-        connect: jest.fn().mockResolvedValue(undefined),
-        disconnect: jest.fn().mockResolvedValue(undefined),
-        remove: jest.fn().mockResolvedValue(undefined),
-        inspect: jest.fn().mockResolvedValue({
-          Id: "mock-network-id",
-          Name: "mock-network",
-          Driver: "bridge",
-          Scope: "local",
-          Internal: true,
-          Labels: {},
-          Created: Date.now() / 1000,
-          Containers: {},
-        }),
-      }),
-      listNetworks: jest.fn().mockResolvedValue([]),
-      info: jest.fn().mockResolvedValue({}),
-    };
-  };
+  return jest.fn().mockImplementation(() => mockDockerInstance);
 });
 
 describe("NetworkManager", () => {
@@ -46,11 +27,49 @@ describe("NetworkManager", () => {
   }
   let networkManager: NetworkManager;
   let mockNetwork: any;
-  let mockDocker: any;
 
   beforeEach(() => {
     // Clear singleton instances
     (NetworkManager as any).instance = undefined;
+
+    // Clear NetworkIsolator singleton from module cache
+    jest.resetModules();
+    jest.unmock("../../src/util/network-isolator");
+    const NetworkIsolatorModule = require("../../src/util/network-isolator");
+    (NetworkIsolatorModule.NetworkIsolator as any).instance = undefined;
+
+    // Setup mock Docker instance BEFORE NetworkManager is instantiated
+    const createNetworkMock = jest.fn().mockResolvedValue({
+      id: "test-network-id",
+    });
+    const getNetworkMock = jest.fn().mockReturnValue({
+      connect: jest.fn().mockResolvedValue(undefined as any),
+      disconnect: jest.fn().mockResolvedValue(undefined as any),
+      remove: jest.fn().mockResolvedValue(undefined as any),
+      inspect: jest.fn().mockResolvedValue({
+        Id: "test-network-id",
+        Name: "test-network",
+        Driver: "bridge",
+        Scope: "local",
+        Internal: true,
+        Labels: {
+          "opencode.taskId": "test-task-1",
+          "opencode.managed": "true",
+        },
+        Created: Date.now() / 1000,
+        Containers: {},
+      } as any),
+    });
+    const listNetworksMock = jest.fn().mockResolvedValue([] as any);
+    const infoMock = jest.fn().mockResolvedValue({} as any);
+
+    mockDockerInstance = {
+      createNetwork: createNetworkMock,
+      getNetwork: getNetworkMock,
+      listNetworks: listNetworksMock,
+      info: infoMock,
+    };
+    mockNetwork = mockDockerInstance.getNetwork("test-network-id");
 
     // Import and clear NetworkIsolator singleton
     const { NetworkIsolator } = require("../../src/util/network-isolator");
@@ -89,7 +108,7 @@ describe("NetworkManager", () => {
       listNetworks: listNetworksMock,
       info: infoMock,
     };
-    mockNetwork = mockDocker.getNetwork("test-network-id");
+    mockNetwork = mockDockerInstance.getNetwork("test-network-id");
 
     // Set environment variables
     process.env.DOCKER_SOCKET_PATH = "/var/run/docker.sock";
@@ -114,7 +133,7 @@ describe("NetworkManager", () => {
     });
 
     it("should handle initialization errors gracefully", async () => {
-      mockDocker.info = jest
+      mockDockerInstance.info = jest
         .fn()
         .mockRejectedValue(new Error("Docker connection failed"));
 
@@ -127,7 +146,7 @@ describe("NetworkManager", () => {
       // Second initialization should be a no-op
       await networkManager.initialize();
 
-      expect(mockDocker.info).toHaveBeenCalledTimes(1);
+      expect(mockDockerInstance.info).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -140,7 +159,7 @@ describe("NetworkManager", () => {
       const taskId = "test-task-1";
       const networkId = await networkManager.createTaskNetwork(taskId);
 
-      expect(mockDocker.createNetwork).toHaveBeenCalled();
+      expect(mockDockerInstance.createNetwork).toHaveBeenCalled();
       expect(networkId).toBe("test-network-id");
     });
 
@@ -148,7 +167,7 @@ describe("NetworkManager", () => {
       const taskId = "test-task-2";
       await networkManager.createTaskNetwork(taskId);
 
-      const createCall = mockDocker.createNetwork.mock.calls[0][0];
+      const createCall = mockDockerInstance.createNetwork.mock.calls[0][0];
       expect(createCall.name).toBe(`opencode-${taskId}`);
     });
 
@@ -156,7 +175,7 @@ describe("NetworkManager", () => {
       const taskId = "test-task-3";
       await networkManager.createTaskNetwork(taskId);
 
-      const createCall = mockDocker.createNetwork.mock.calls[0][0];
+      const createCall = mockDockerInstance.createNetwork.mock.calls[0][0];
       expect(createCall.internal).toBe(true);
     });
 
@@ -164,7 +183,7 @@ describe("NetworkManager", () => {
       const taskId = "test-task-4";
       await networkManager.createTaskNetwork(taskId);
 
-      const createCall = mockDocker.createNetwork.mock.calls[0][0];
+      const createCall = mockDockerInstance.createNetwork.mock.calls[0][0];
       expect(createCall.labels).toEqual({
         "opencode.taskId": taskId,
         "opencode.managed": "true",
@@ -176,7 +195,7 @@ describe("NetworkManager", () => {
       const taskId = "test-task-5";
       await networkManager.createTaskNetwork(taskId);
 
-      const createCall = mockDocker.createNetwork.mock.calls[0][0];
+      const createCall = mockDockerInstance.createNetwork.mock.calls[0][0];
       expect(createCall.ipam).toBeDefined();
       expect(createCall.ipam?.driver).toBe("default");
       expect(createCall.ipam?.config).toBeDefined();
@@ -187,7 +206,7 @@ describe("NetworkManager", () => {
 
     it("should throw OpenCodeError on creation failure", async () => {
       const taskId = "test-task-6";
-      mockDocker.createNetwork = jest
+      mockDockerInstance.createNetwork = jest
         .fn()
         .mockRejectedValue(new Error("Network creation failed"));
 
@@ -346,7 +365,7 @@ describe("NetworkManager", () => {
     beforeEach(async () => {
       await networkManager.initialize();
 
-      mockDocker.listNetworks = jest.fn().mockResolvedValue([
+      mockDockerInstance.listNetworks = jest.fn().mockResolvedValue([
         {
           Id: networkId,
           Name: `opencode-${taskId}`,
@@ -518,7 +537,7 @@ describe("NetworkManager", () => {
     });
 
     it("should clean up orphaned networks on initialization", async () => {
-      mockDocker.listNetworks = jest.fn().mockResolvedValue([
+      mockDockerInstance.listNetworks = jest.fn().mockResolvedValue([
         {
           Id: "orphaned-network-id",
           Name: "opencode-orphaned-task",
@@ -534,7 +553,7 @@ describe("NetworkManager", () => {
 
       await networkManager.initialize();
 
-      expect(mockDocker.listNetworks).toHaveBeenCalled();
+      expect(mockDockerInstance.listNetworks).toHaveBeenCalled();
     });
   });
 
@@ -549,7 +568,9 @@ describe("NetworkManager", () => {
 
     it("should use NETWORK_INITIALIZATION_FAILED for init errors", async () => {
       const newManager = NetworkManager.getInstance();
-      mockDocker.info = jest.fn().mockRejectedValue(new Error("Init failed"));
+      mockDockerInstance.info = jest
+        .fn()
+        .mockRejectedValue(new Error("Init failed"));
 
       await expect(newManager.initialize()).rejects.toMatchObject({
         code: "NETWORK_INITIALIZATION_FAILED",
@@ -558,7 +579,7 @@ describe("NetworkManager", () => {
 
     it("should use NETWORK_CREATION_FAILED for creation errors", async () => {
       const newTaskId = "new-task-error";
-      mockDocker.createNetwork = jest
+      mockDockerInstance.createNetwork = jest
         .fn()
         .mockRejectedValue(new Error("Creation failed"));
 
