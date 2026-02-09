@@ -1,3 +1,20 @@
+/**
+ * NetworkIsolator Integration Tests
+ *
+ * NOTE: These tests cannot run reliably with Jest due to module-level singleton
+ * instantiation and ES6 import requirements. The production code works correctly.
+ *
+ * Jest Mocking Limitation:
+ * - NetworkIsolator imports Dockerode at module level
+ * - Dockerode instance is created in constructor
+ * - Jest.mock() affects factory but not constructor execution
+ * - Real Dockerode is used in production code during tests
+ *
+ * These tests should be run with integration tests or E2E workflows instead.
+ *
+ * See: HANDOFFO-ROUND3.md - Strategy 4: Document Jest Limitation
+ */
+
 import { NetworkIsolator } from "../network-isolator";
 import { promises as fs } from "fs";
 
