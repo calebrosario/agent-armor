@@ -122,4 +122,64 @@ describe("DesktopCompatibility", () => {
       expect(() => compat.clearCache()).not.toThrow();
     });
   });
+
+  // NOTE: Docker socket mocking tests are deferred for future enhancement
+  // The singleton pattern makes proper mocking complex without architectural changes
+  // TODO: Refactor DesktopCompatibility to support dependency injection for testing
+
+  /*
+  describe("with mocked Docker unavailable", () => {
+    let originalExec: any;
+    let mockedCompat: DesktopCompatibility;
+
+    beforeEach(() => {
+      // Store original exec function
+      originalExec = require("child_process").exec;
+
+      // Clear singleton instance so it's recreated with mocked exec
+      (DesktopCompatibility as any).instance = undefined;
+
+      // Mock exec to simulate Docker being unavailable
+      jest.doMock("child_process", () => ({
+        exec: jest.fn((command: string, callback: any) => {
+          // Simulate docker command not found
+          if (command.includes("docker")) {
+            callback(new Error("docker: command not found"), "", "");
+          } else {
+            originalExec(command, callback);
+          }
+        }),
+        // Preserve execSync for other operations
+        execSync: require("child_process").execSync,
+      }));
+
+      // Create mocked instance
+      mockedCompat = DesktopCompatibility.getInstance();
+    });
+
+    afterEach(() => {
+      // Restore original exec
+      jest.dontMock("child_process");
+      // Clear singleton instance for other tests
+      (DesktopCompatibility as any).instance = undefined;
+    });
+
+    it("should return null when Docker is not available (mocked)", async () => {
+      mockedCompat.clearCache();
+
+      const version: DesktopVersion | null =
+        await mockedCompat.detectDesktopVersion();
+
+      expect(version).toBeNull();
+    });
+
+    it("should detect Docker as not running (mocked)", async () => {
+      mockedCompat.clearCache();
+
+      const running = await mockedCompat.isDesktopRunning();
+
+      expect(running).toBe(false);
+    });
+  });
+  */
 });
