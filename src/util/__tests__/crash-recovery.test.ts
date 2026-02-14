@@ -21,7 +21,9 @@ describe("Phase 1: Crash Recovery Tests", () => {
           const filePath = path.join(crashReportDir, file);
           try {
             fs.unlinkSync(filePath);
-          } catch (e) {}
+          } catch (e) {
+            console.error("Failed to delete crash report file:", filePath, e);
+          }
         }
       });
     }

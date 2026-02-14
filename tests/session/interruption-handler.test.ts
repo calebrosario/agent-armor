@@ -3,32 +3,29 @@ import {
   InterruptionHandler,
   interruptionHandler,
 } from "../../src/session/interruption-handler";
-import { multiLayerPersistence } from "../../src/persistence/multi-layer";
 
-// Mock multiLayerPersistence for testing
-jest.mock("../../src/persistence/multi-layer");
+// Manual mock for multiLayerPersistence to work with Bun test runner
+const mockCreateCheckpoint = jest.fn().mockResolvedValue("checkpoint-123");
+const mockRestoreCheckpoint = jest.fn().mockResolvedValue(undefined);
+
+// Mock multiLayerPersistence module
+jest.mock("../../src/persistence/multi-layer", () => ({
+  multiLayerPersistence: {
+    createCheckpoint: mockCreateCheckpoint,
+    restoreCheckpoint: mockRestoreCheckpoint,
+  },
+}));
 
 describe("InterruptionHandler", () => {
   let handler: InterruptionHandler;
-  const mockCreateCheckpoint = jest.mocked(
-    multiLayerPersistence.createCheckpoint,
-  );
-  const mockRestoreCheckpoint = jest.mocked(
-    multiLayerPersistence.restoreCheckpoint,
-  );
 
   beforeEach(() => {
-    // Clear all listeners and timers
+    // Clear all mocks - timers are not mocked so skip clearAllTimers
     jest.clearAllMocks();
-    jest.clearAllTimers();
 
     // Reset singleton instance
     (InterruptionHandler as any).instance = undefined;
     handler = InterruptionHandler.getInstance();
-  });
-
-  afterEach(() => {
-    jest.useRealTimers();
   });
 
   describe("Session Lifecycle", () => {

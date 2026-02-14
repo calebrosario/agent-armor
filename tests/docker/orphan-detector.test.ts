@@ -10,12 +10,21 @@ import {
 import { DockerManager } from "../../src/docker/manager";
 import { ContainerInfo, ContainerStatus } from "../../src/types";
 
-// Mock DockerManager
-jest.mock("../../src/docker/manager");
+const mockListContainers = jest.fn();
+const mockRemoveContainer = jest.fn();
+const mockInspectContainer = jest.fn();
+const mockGetInstance = jest.fn().mockReturnValue({
+  listContainers: mockListContainers,
+  removeContainer: mockRemoveContainer,
+  inspectContainer: mockInspectContainer,
+});
 
-const mockDockerManager = DockerManager as jest.Mocked<typeof DockerManager>;
+DockerManager.getInstance = mockGetInstance;
+DockerManager.prototype.listContainers = mockListContainers;
+DockerManager.prototype.removeContainer = mockRemoveContainer;
+DockerManager.prototype.inspectContainer = mockInspectContainer;
 
-// Mock logger
+// Mock logger to avoid import issues
 jest.mock("../../src/util/logger", () => ({
   logger: {
     info: jest.fn(),
@@ -27,9 +36,22 @@ jest.mock("../../src/util/logger", () => ({
 
 const logger = require("../../src/util/logger").logger;
 
+const createMockContainer = (
+  overrides: Partial<ContainerInfo> = {},
+): ContainerInfo => ({
+  id: "container-123",
+  name: "opencode_task-1",
+  image: "node:20",
+  status: "exited",
+  createdAt: new Date(Date.now() - 25 * 60 * 60 * 1000),
+  labels: {
+    "opencode.task.id": "task-1",
+  },
+  ...overrides,
+});
+
 describe("OrphanDetector", () => {
   let detector: OrphanDetector;
-  let mockListContainers: jest.Mock;
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -40,12 +62,11 @@ describe("OrphanDetector", () => {
     // Create new detector instance
     detector = OrphanDetector.getInstance();
 
-    // Mock DockerManager methods
-    mockDockerManager.getInstance.mockReturnValue(mockDockerManager as any);
-    mockListContainers = jest.fn();
-    mockDockerManager.listContainers = mockListContainers;
-    mockDockerManager.removeContainer = jest.fn();
-    mockDockerManager.inspectContainer = jest.fn();
+    // Reset mock functions
+    mockListContainers.mockClear();
+    mockRemoveContainer.mockClear();
+    mockInspectContainer.mockClear();
+    mockGetInstance.mockClear();
   });
 
   afterEach(async () => {
@@ -75,6 +96,9 @@ describe("OrphanDetector", () => {
 
   describe("Initialization", () => {
     test("should initialize successfully with default config", async () => {
+      // Set up empty mock for listContainers
+      mockListContainers.mockResolvedValue([]);
+
       await detector.initialize();
 
       expect(detector.getStatus().enabled).toBe(true);
@@ -83,6 +107,9 @@ describe("OrphanDetector", () => {
     });
 
     test("should start periodic detection on initialization", async () => {
+      // Set up empty mock for listContainers
+      mockListContainers.mockResolvedValue([]);
+
       await detector.initialize();
 
       // Wait a bit for initial detection
@@ -143,22 +170,9 @@ describe("OrphanDetector", () => {
   });
 
   describe("Orphan Detection", () => {
-    const createMockContainer = (
-      overrides: Partial<ContainerInfo> = {},
-    ): ContainerInfo => ({
-      id: "container-123",
-      name: "opencode_task-1",
-      image: "node:20",
-      status: "exited",
-      createdAt: new Date(Date.now() - 25 * 60 * 60 * 1000), // 25 hours ago
-      labels: {
-        "opencode.task.id": "task-1",
-      },
-      ...overrides,
-    });
-
     test("should detect orphaned container without known task", async () => {
       const container = createMockContainer();
+      // Set up mock BEFORE calling detectOrphans
       mockListContainers.mockResolvedValue([container]);
 
       const result = await detector.detectOrphans();
@@ -320,23 +334,23 @@ describe("OrphanDetector", () => {
 
     test("should clean up orphaned containers", async () => {
       const orphans = [createMockOrphan("task-1"), createMockOrphan("task-2")];
-      mockDockerManager.removeContainer.mockResolvedValue(undefined);
+      mockRemoveContainer.mockResolvedValue(undefined);
 
       const result = await detector.cleanupOrphans(orphans);
 
       expect(result.containersRemoved).toHaveLength(2);
       expect(result.containersRemoved).toContain("container-task-1");
       expect(result.containersRemoved).toContain("container-task-2");
-      expect(mockDockerManager.removeContainer).toHaveBeenCalledTimes(2);
+      expect(mockRemoveContainer).toHaveBeenCalledTimes(2);
     });
 
     test("should use force flag when removing containers", async () => {
       const orphans = [createMockOrphan("task-1")];
-      mockDockerManager.removeContainer.mockResolvedValue(undefined);
+      mockRemoveContainer.mockResolvedValue(undefined);
 
       await detector.cleanupOrphans(orphans);
 
-      expect(mockDockerManager.removeContainer).toHaveBeenCalledWith(
+      expect(mockRemoveContainer).toHaveBeenCalledWith(
         "container-task-1",
         true, // force
         false, // removeVolumes
@@ -345,7 +359,7 @@ describe("OrphanDetector", () => {
 
     test("should handle removal failures gracefully", async () => {
       const orphans = [createMockOrphan("task-1"), createMockOrphan("task-2")];
-      mockDockerManager.removeContainer
+      mockRemoveContainer
         .mockResolvedValueOnce(undefined)
         .mockRejectedValueOnce(new Error("Container not found"));
 
@@ -367,16 +381,16 @@ describe("OrphanDetector", () => {
         reason: "Container stopped for 10 hours",
       };
 
-      mockDockerManager.removeContainer.mockResolvedValue(undefined);
+      mockRemoveContainer.mockResolvedValue(undefined);
 
       await detector.cleanupOrphans([youngOrphan]);
 
-      expect(mockDockerManager.removeContainer).not.toHaveBeenCalled();
+      expect(mockRemoveContainer).not.toHaveBeenCalled();
     });
 
     test("should log cleanup events", async () => {
       const orphans = [createMockOrphan("task-1")];
-      mockDockerManager.removeContainer.mockResolvedValue(undefined);
+      mockRemoveContainer.mockResolvedValue(undefined);
 
       await detector.cleanupOrphans(orphans);
 
@@ -391,7 +405,7 @@ describe("OrphanDetector", () => {
     test("should log cleanup failures", async () => {
       const orphans = [createMockOrphan("task-1")];
       const error = new Error("Container in use");
-      mockDockerManager.removeContainer.mockRejectedValue(error);
+      mockRemoveContainer.mockRejectedValue(error);
 
       await detector.cleanupOrphans(orphans);
 
@@ -495,11 +509,11 @@ describe("OrphanDetector", () => {
     test("should detect and cleanup orphans automatically", async () => {
       const container = createMockContainer();
       mockListContainers.mockResolvedValue([container]);
-      mockDockerManager.removeContainer.mockResolvedValue(undefined);
+      mockRemoveContainer.mockResolvedValue(undefined);
 
       await detector.detectOrphans();
 
-      expect(mockDockerManager.removeContainer).toHaveBeenCalled();
+      expect(mockRemoveContainer).toHaveBeenCalled();
     });
 
     test("should track containers across multiple detection cycles", async () => {

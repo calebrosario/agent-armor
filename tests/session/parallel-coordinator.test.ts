@@ -14,6 +14,31 @@ describe("ParallelCoordinator", () => {
   let coordinator: ParallelCoordinator;
 
   beforeEach(async () => {
+    // Create workspace directories for tests
+    const { promises: fs } = require("fs");
+    const workspacePaths = [
+      "/tmp/workspace-1",
+      "/tmp/workspace-2",
+      "/tmp/workspace-3",
+      "/tmp/workspace-4",
+      "/tmp/workspace-5",
+      "/tmp/workspace-6",
+      "/tmp/workspace-7",
+      "/tmp/workspace-8",
+      "/tmp/workspace-isolate",
+      "/tmp/workspace-unregister",
+    ];
+
+    for (const path of workspacePaths) {
+      try {
+        await fs.mkdir(path, { recursive: true });
+      } catch (error) {
+        if ((error as NodeJS.ErrnoException).code !== "EEXIST") {
+          console.error(`Error creating workspace ${path}:`, error);
+        }
+      }
+    }
+
     coordinator = ParallelCoordinator.getInstance();
   });
 

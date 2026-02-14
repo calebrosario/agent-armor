@@ -18,7 +18,12 @@ describe("MultiLayerPersistence", () => {
   beforeAll(async () => {
     try {
       await multiLayerPersistence.cleanup(testTaskId);
-    } catch (error) {}
+    } catch (error) {
+      // Ignore cleanup errors during test setup - files may not exist yet
+      if ((error as NodeJS.ErrnoException).code !== "ENOENT") {
+        console.error("Error during beforeAll cleanup:", error);
+      }
+    }
   });
 
   afterAll(async () => {
@@ -28,7 +33,12 @@ describe("MultiLayerPersistence", () => {
   beforeEach(async () => {
     try {
       await multiLayerPersistence.cleanup(testTaskId);
-    } catch (error) {}
+    } catch (error) {
+      // Ignore cleanup errors during test setup - files may not exist yet
+      if ((error as NodeJS.ErrnoException).code !== "ENOENT") {
+        console.error("Error during beforeEach cleanup:", error);
+      }
+    }
   });
 
   describe("Layer 1: state.json", () => {
