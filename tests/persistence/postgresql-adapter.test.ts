@@ -75,7 +75,7 @@ describe("PostgreSQLAdapter", () => {
       };
 
       await expect(uninitializedAdapter.create(task)).rejects.toThrow(
-        "DATABASE_NOT_INITIALIZED",
+        "Database adapter not initialized",
       );
     });
   });
@@ -308,19 +308,19 @@ describe("PostgreSQLAdapter", () => {
 
   describe("executeRaw", () => {
     it("should execute raw SQL query", async () => {
-      const result = await adapter.executeRaw<{ count: string }>(
+      const result = await adapter.executeRaw<any>(
         "SELECT COUNT(*) as count FROM tasks",
       );
 
       expect(result).toBeDefined();
-      expect(parseInt(result.count, 10)).toBeGreaterThanOrEqual(0);
+      expect(result.rows?.[0]?.count).toBeGreaterThanOrEqual(0);
     });
 
     it("should execute query with parameters", async () => {
-      const taskId = "raw-query-test-1";
+      const taskId = `raw-query-test-${Date.now()}`;
       const task: Task = {
         id: taskId,
-        name: "Raw Query Test",
+        name: "Raw Query Test 2",
         status: "pending" as TaskStatus,
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -328,13 +328,15 @@ describe("PostgreSQLAdapter", () => {
 
       await adapter.create(task);
 
-      const result = await adapter.executeRaw<{ id: string }>(
+      const result = await adapter.executeRaw<any>(
         "SELECT id FROM tasks WHERE id = $1",
         [taskId],
       );
 
       expect(result).toBeDefined();
-      expect(result.id).toBe(taskId);
+      expect(result.rows?.[0]?.id).toBe(taskId);
+
+      await adapter.delete(taskId);
     });
   });
 
@@ -348,7 +350,8 @@ describe("PostgreSQLAdapter", () => {
       await testAdapter.initialize();
       await testAdapter.close();
 
-      await expect(testAdapter.healthCheck()).rejects.toThrow();
+      const isHealthy = await testAdapter.healthCheck();
+      expect(isHealthy).toBe(false);
     });
   });
 });

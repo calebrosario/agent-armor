@@ -177,6 +177,7 @@ export class PostgreSQLAdapter implements DatabaseAdapter {
     try {
       const results = await this.db!.update(schema.tasks)
         .set({
+          name: updates.name,
           status: updates.status,
           owner: updates.owner || null,
           metadata: updates.metadata ? (updates.metadata as any) : null,
@@ -275,7 +276,7 @@ export class PostgreSQLAdapter implements DatabaseAdapter {
 
       const results = await query;
       const [{ count }] = results;
-      return count || 0;
+      return typeof count === "string" ? parseInt(count, 10) : count || 0;
     } catch (error) {
       logger.error("Failed to count tasks", { error });
       throw new OpenCodeError("TASK_COUNT_FAILED", "Failed to count tasks", {
