@@ -1,0 +1,1 @@
+# Legal-AI Eval Suite\n\nProject for evaluating LLM systems in the legal domain for accuracy and compliance.\n\n## Options\n- Option 1: HELM-Inspired Framework\n- Option 2: LangChain Eval Suite\n\nSee submodules for implementations.

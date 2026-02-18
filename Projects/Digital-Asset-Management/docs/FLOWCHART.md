@@ -1,0 +1,19 @@
+https://app.eraser.io/workspace/FljplU3hvxk45IuCp1KU![alt text](https://file%2B.vscode-resource.vscode-cdn.net/Users/calebrosario/Documents/sandbox/digital-asset-management/docs/Flowchart-diagram.png?version%3D1764007694824)
+
+
+**KYC – Know Your Customer**
+
+| Term | What it means |
+|------|----------------|
+| **KYC** | A regulatory process that requires businesses (banks, crypto exchanges, real‑estate platforms, etc.) to verify the identity of their customers before providing services. |
+| **Purpose** | • Prevent money‑laundering, fraud, and terrorism financing. <br>• Enable “due‑diligence” and trust in the financial system. <br>• Meet jurisdictional and AML (Anti‑Money‑Laundering) obligations. |
+| **Typical Steps** | 1. **Collect Basic ID** – government‑issued photo ID (passport, driver’s licence, national ID). <br>2. **Verify Identity** – verify the ID against a trusted source (e.g., a third‑party verification service such as Trulioo, Onfido, Jumio). <br>3. **Collect Proof of Address** – utility bill, bank statement, or digital utility invoice. <br>4. **Optional – Source‑of‑Funds** – documentation that shows where the money comes from (pay‑stubs, tax returns, asset statements). <br>5. **Risk Assessment** – assign a risk score (low/medium/high) based on the data. <br>6. **Record & Store** – secure, encrypted storage of all documents and results; logs of who accessed the data and why.
+|
+| **How It Works in Crypto / DeFi** | • Many exchanges and DeFi protocols embed KYC as a gate‑keep before a user can mint a token, trade, or withdraw large amounts. <br>• The platform forwards the verification results to a DAO‑governed contract, or stores them on‑chain (e.g., hashed KYC data or a Merkle proof). <br>• Once KYC is passed, the user receives a “KYC‑approved” status flag in their on‑chain profile, enabling access to premium features (higher withdrawal limits, escrow contracts, fractional share sales, etc.). |
+| **Legal Frameworks** | • **USA** – FinCEN’s Bank Secrecy Act, AML Regulations. <br>• **EU** – 4th/5th AML Directive, GDPR (personal data protection). <br>• **UK** – FCA’s AML rules, GDPR. <br>• **Other Jurisdictions** – Similar AML/KYC regulations; often a “Know‑Your‑Customer” check is required for any financial transaction over a threshold. |
+| **Common Pitfalls** | • **False positives** – users incorrectly flagged as high‑risk. <br>• **Data Breaches** – if KYC data is not encrypted or mis‑managed. <br>• **Non‑compliance** – using KYC data without following local privacy laws (e.g., GDPR’s “right to be forgotten”). <br>• **Limited coverage** – some services only verify a few data points, leaving gaps for money‑laundering routes. |
+| **Best Practices** | • Use a reputable KYC provider with a strong privacy policy. <br>• Store KYC evidence encrypted and with strict access controls. <br>• Log all verification actions and audit them regularly. <br>• Offer a “KYC‑verified” flag to users, and tie business logic (limits, permissions) to that flag. <br>• Keep KYC data on‑chain only as hashes or Merkle proofs, never as raw personal data. |
+
+In short, **KYC is the legal “proof of identity” step that financial‑like platforms must perform to satisfy regulators, protect customers, and prevent illicit activity.** It typically involves verifying government ID, proof of address,
+and sometimes source‑of‑funds information, then securely recording the verification results. In a blockchain setting, the verification result is usually stored on‑chain as a simple flag or a hash, and the platform grants or limits
+access to certain on‑chain features based on that flag.

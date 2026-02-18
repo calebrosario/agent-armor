@@ -1,0 +1,342 @@
+# Legal-AI Foundation LLM Training - Project Status
+
+**Last Updated**: 2026-01-16
+**Session**: Current (Planner Mode)
+**Overall Progress**: 10% (1/10 tasks complete)
+
+---
+
+## Status Summary
+
+### Phase 1: Foundation Setup (Weeks 1-2)
+**Status**: 🟡 In Progress (Planning Complete, Implementation Pending)
+
+#### Task 1.1: Model Architecture Selection ✅ COMPLETE
+**Status**: ✅ COMPLETE
+**Completion Date**: 2026-01-16
+**Deliverables**:
+- [x] Comprehensive model analysis completed
+- [x] Llama-3-8B-Instruct selected as primary model
+- [x] Hardware requirements documented
+- [x] Training approach defined (continued pre-training + instruction tuning)
+- [x] Backup option identified (Mistral 7B)
+
+**Documents Created**:
+- `.sisyphus/drafts/model_selection_analysis.md` - Detailed analysis of foundation models
+- `.sisyphus/drafts/foundation_llm_training_plan_v2.md` - Updated plan with model selection
+
+**Key Decisions**:
+- Primary Model: Llama-3-8B-Instruct (128K context, strong reasoning)
+- Backup Model: Mistral 7B (Apache 2.0 license, faster training)
+- Training Approach: 2-phase (continued pre-training + instruction tuning)
+- Hardware: 4x A100 80GB GPUs (recommended) or 2x A100 80GB (minimum)
+
+#### Task 1.2: Data Pipeline Development ⏳ PENDING
+**Status**: ⏳ PLANNED (Implementation pending /start-work)
+**Estimated Start**: Week 2
+**Estimated Duration**: 5 days
+
+**Planning Documents Created**:
+- `.sisyphus/drafts/data_pipeline_architecture.md` - Complete technical specifications
+
+**Key Components Specified**:
+- Data extraction layer (PostgreSQL integration)
+- Text preprocessing (normalization, filtering, quality checks)
+- Dataset splitting strategy (stratified splits)
+- Data formats (JSONL for pre-training, chat format for instruction tuning)
+- Data loading pipeline (PyTorch Dataset/DataLoader)
+- Quality assurance (token distribution, deduplication, validation)
+- Integration with existing scraper infrastructure
+
+**Implementation Tasks** (not yet started):
+- [ ] Create data extraction module from PostgreSQL
+- [ ] Implement text preprocessing pipeline
+- [ ] Build tokenization pipeline with Llama-3 tokenizer
+- [ ] Create dataset splitting strategy
+- [ ] Implement continued pre-training format (JSONL)
+- [ ] Implement instruction tuning format (chat format)
+- [ ] Build efficient data loaders
+- [ ] Add quality assurance checks
+- [ ] Implement deduplication
+- [ ] Create data validation scripts
+- [ ] Add integration with existing scraper
+- [ ] Set up automated data generation pipeline
+- [ ] Document data statistics
+
+### Phase 2: Training Infrastructure (Weeks 3-4)
+**Status**: 🔴 Not Started
+
+#### Task 2.1: Distributed Training Setup 🔴 NOT STARTED
+**Status**: 🔴 NOT STARTED
+**Estimated Start**: Week 3
+**Estimated Duration**: 5 days
+
+**Planning Documents Created**:
+- `.sisyphus/drafts/training_infrastructure_spec.md` - Complete infrastructure specifications
+
+**Specifications Defined**:
+- Hardware architecture (4x A100 80GB GPUs recommended)
+- Software stack (PyTorch 2.1+, DeepSpeed, WandB)
+- DeepSpeed configuration (stage 2 optimization, CPU offloading)
+- Monitoring setup (Weights & Biases, TensorBoard)
+- Checkpoint management strategy
+- Memory optimization techniques
+- Error handling and recovery procedures
+
+**Implementation Tasks** (not yet started):
+- [ ] Provision GPU cluster (4x A100 80GB)
+- [ ] Install NVIDIA drivers and CUDA toolkit
+- [ ] Install PyTorch with CUDA support
+- [ ] Install DeepSpeed
+- [ ] Configure Weights & Biases
+- [ ] Set up monitoring dashboards
+- [ ] Configure storage (5TB NVMe)
+- [ ] Test GPU connectivity with NCCL
+- [ ] Implement distributed training code
+- [ ] Create DeepSpeed configuration
+- [ ] Implement checkpoint saving/loading
+- [ ] Add logging and monitoring
+- [ ] Implement gradient checkpointing
+- [ ] Test multi-GPU training
+
+#### Task 2.2: Legal Domain Adaptation 🔴 NOT STARTED
+**Status**: 🔴 NOT STARTED
+**Estimated Start**: Week 4
+**Estimated Duration**: 7 days
+
+**Key Components** (not yet implemented):
+- Continued pre-training on 10B legal tokens
+- Instruction tuning on 500K legal examples
+- Multi-task learning across LegalBench tasks
+- Domain-specific vocabulary expansion
+
+### Phase 3: Evaluation & Safety (Weeks 5-6)
+**Status**: 🔴 Not Started
+
+#### Task 3.1: Integration with Existing Evaluation 🔴 NOT STARTED
+**Status**: 🔴 NOT STARTED
+**Estimated Start**: Week 5
+**Estimated Duration**: 5 days
+
+**Key Tasks** (not yet started):
+- [ ] Integrate LegalBench evaluation into training loop
+- [ ] Implement automated evaluation at checkpoints
+- [ ] Track performance across 162 legal reasoning tasks
+- [ ] Compare with baseline models (GPT-4, Claude)
+
+#### Task 3.2: Safety & Bias Evaluation 🔴 NOT STARTED
+**Status**: 🔴 NOT STARTED
+**Estimated Start**: Week 5
+**Estimated Duration**: 7 days
+
+**Key Tasks** (not yet started):
+- [ ] Implement hallucination detection
+- [ ] Add bias evaluation across demographic groups
+- [ ] Ensure compliance with legal ethics
+- [ ] Implement adversarial testing
+
+### Phase 4: Deployment & Production (Weeks 7-8)
+**Status**: 🔴 Not Started
+
+#### Task 4.1: Model Deployment Pipeline 🔴 NOT STARTED
+**Status**: 🔴 NOT STARTED
+**Estimated Start**: Week 7
+**Estimated Duration**: 5 days
+
+**Key Tasks** (not yet started):
+- [ ] Implement vLLM or TGI inference server
+- [ ] Create API endpoints compatible with RAG pipeline
+- [ ] Implement model versioning
+- [ ] Set up A/B testing capability
+- [ ] Configure load balancing
+
+#### Task 4.2: Monitoring & Maintenance 🔴 NOT STARTED
+**Status**: 🔴 NOT STARTED
+**Estimated Start**: Week 8
+**Estimated Duration**: 5 days
+
+**Key Tasks** (not yet started):
+- [ ] Create performance monitoring dashboards
+- [ ] Implement automated retraining triggers
+- [ ] Add model drift detection
+- [ ] Set up cost optimization
+
+---
+
+## Planning Artifacts Created
+
+### Technical Documentation
+1. ✅ `.sisyphus/drafts/model_selection_analysis.md` (2,500 words)
+   - Comprehensive analysis of 6 foundation models
+   - Comparative matrix with performance metrics
+   - Hardware requirements for each model
+   - Detailed recommendation for Llama-3-8B
+
+2. ✅ `.sisyphus/drafts/data_pipeline_architecture.md` (4,200 words)
+   - 7-layer architecture specification
+   - Complete code examples for preprocessing
+   - Data formats for both training phases
+   - Quality assurance procedures
+   - Implementation checklist (13 items)
+
+3. ✅ `.sisyphus/drafts/training_infrastructure_spec.md` (3,800 words)
+   - Hardware architecture (recommended and minimum)
+   - Complete software stack specifications
+   - DeepSpeed configuration with JSON example
+   - Training hyperparameters for both phases
+   - Checkpoint management strategy
+   - Memory optimization techniques
+   - Error handling procedures
+   - Implementation checklist (23 items)
+
+### Plan Documents
+1. ✅ `.sisyphus/plans/foundation_llm_training_plan.md` (191 lines)
+   - 8-week implementation plan
+   - 4-phase breakdown with tasks and deliverables
+   - Risk mitigation strategies
+   - Success metrics
+   - Resource requirements
+
+2. ✅ `.sisyphus/plans/foundation_llm_training_plan_v2.md` (248 lines)
+   - Updated plan with model selection decision
+   - Detailed task breakdown
+   - Integration points with existing codebase
+   - Timeline and milestones
+
+---
+
+## Current Blockers
+
+### Mode Constraint
+**Issue**: Currently in PLANNER MODE (ultrawork mode)
+**Impact**: Cannot create directories, write code, or implement features
+**Resolution Required**: User must run `/start-work` to switch to IMPLEMENTER MODE
+
+**Blocker Details**:
+- Cannot create `training/` directory at project root
+- Cannot write implementation code
+- Cannot execute training scripts
+- Cannot integrate with existing infrastructure
+
+**Next Action Required**: Run `/start-work` to begin implementation
+
+---
+
+## Dependencies
+
+### External Dependencies
+- [ ] GPU cluster access (4x A100 80GB recommended)
+- [ ] Legal domain expert consultation (data quality validation)
+- [ ] Budget approval for computational resources (~$15,000-25,000/month for cloud GPUs)
+
+### Internal Dependencies
+- [ ] Existing scraper infrastructure (ready)
+- [ ] PostgreSQL database with legal corpus (ready)
+- [ ] LegalBench evaluation framework (ready)
+- [ ] HELM framework (ready)
+- [ ] LLM-judge pipeline (ready)
+
+---
+
+## Risks & Mitigation
+
+### Technical Risks
+
+| Risk | Probability | Impact | Mitigation Status |
+|------|-------------|--------|------------------|
+| GPU memory constraints | Medium | High | ✅ DeepSpeed config designed with CPU offloading |
+| Data quality issues | Medium | High | ✅ Quality checks specified in data pipeline |
+| Model convergence issues | Low | High | ✅ Monitoring alerts planned |
+| Training cost overruns | Medium | Medium | ✅ Cost optimization techniques identified |
+
+### Legal/Ethical Risks
+
+| Risk | Probability | Impact | Mitigation Status |
+|------|-------------|--------|------------------|
+| Bias in training data | Medium | High | ⏳ Bias evaluation planned (Phase 3) |
+| Model hallucinations | Medium | High | ⏳ Guardrails to be implemented (Phase 3) |
+| Privacy concerns | Low | Medium | ⏳ PII filtering planned (Phase 1) |
+| Professional standards | Low | Medium | ⏳ Legal expert review planned (Phase 3) |
+
+---
+
+## Metrics Dashboard (Planned)
+
+### Training Metrics
+- [ ] Tokens processed / total tokens
+- [ ] Training loss curve
+- [ ] Validation loss curve
+- [ ] Learning rate schedule
+- [ ] Training speed (tokens/second)
+- [ ] GPU utilization (%)
+- [ ] Memory usage (GB)
+
+### Evaluation Metrics
+- [ ] LegalBench accuracy (overall and per-task)
+- [ ] Comparison with baselines (GPT-4, Claude)
+- [ ] Latency metrics (ms per query)
+- [ ] Hallucination rate (%)
+- [ ] Bias metrics (demographic parity)
+
+### Business Metrics
+- [ ] Model performance vs. target (>80% LegalBench accuracy)
+- [ ] Cost per training epoch
+- [ ] Total project spend vs. budget
+- [ ] User satisfaction (post-deployment)
+
+---
+
+## Next Steps
+
+### Immediate Actions (Blocked - Requires /start-work)
+1. Run `/start-work` to switch to implementer mode
+2. Create `training/` directory at project root
+3. Create `training/plan.md` with latest plan details
+4. Create `training/status.md` for session tracking
+5. Begin Task 1.2: Data Pipeline Development
+
+### Week 2 Priorities (After /start-work)
+1. Implement data extraction from PostgreSQL
+2. Create text preprocessing scripts
+3. Build tokenization pipeline
+4. Test data pipeline on sample
+5. Begin continued pre-training preparation
+
+### Week 3 Priorities
+1. Provision GPU infrastructure
+2. Set up distributed training environment
+3. Implement training scripts
+4. Test single-GPU training
+5. Scale to multi-GPU training
+
+---
+
+## Session Notes
+
+**Current Session**: Planner Mode
+**Session Duration**: ~45 minutes
+**Work Completed**:
+- Analyzed existing Legal-AI codebase infrastructure
+- Conducted model selection analysis
+- Created detailed technical specifications for data pipeline
+- Created detailed technical specifications for training infrastructure
+- Updated implementation plan with model selection decision
+- Created project status tracking document
+
+**Session Output**: 4 comprehensive planning documents totaling ~10,500 words
+- Model selection analysis (2,500 words)
+- Data pipeline architecture (4,200 words)
+- Training infrastructure specs (3,800 words)
+- Updated plan (248 lines)
+
+**Total Planning Artifacts**: 5 documents
+- 3 detailed technical specifications
+- 2 implementation plans
+
+---
+
+**Mode**: Planner (ultrawork)
+**Status**: ✅ Planning Complete
+**Implementation**: ❌ Blocked - Waiting for `/start-work`
+
+**To Continue**: Run `/start-work` to begin Phase 1, Task 1.2 implementation

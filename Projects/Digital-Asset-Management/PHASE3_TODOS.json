@@ -1,0 +1,98 @@
+[
+  {
+    "content": "Review smart contract structure and deployment requirements",
+    "id": "phase3-1",
+    "priority": "high",
+    "status": "pending"
+  },
+  {
+    "content": "Set up blockchain environment (.env with RPC URLs and API keys)",
+    "id": "phase3-2",
+    "priority": "high",
+    "status": "pending"
+  },
+  {
+    "content": "Compile smart contracts using Hardhat",
+    "id": "phase3-3",
+    "priority": "high",
+    "status": "pending"
+  },
+  {
+    "content": "Deploy contracts to Polygon Mumbai testnet",
+    "id": "phase3-4",
+    "priority": "high",
+    "status": "pending"
+  },
+  {
+    "content": "Verify deployed contracts on Polygonscan",
+    "id": "phase3-5",
+    "priority": "high",
+    "status": "pending"
+  },
+  {
+    "content": "Transfer proxy ownership to TimelockController",
+    "id": "phase3-6",
+    "priority": "high",
+    "status": "pending"
+  },
+  {
+    "content": "Grant KYC_ADMIN_ROLE to Timelock",
+    "id": "phase3-7",
+    "priority": "high",
+    "status": "pending"
+  },
+  {
+    "content": "Grant DAO roles (PROPOSER_ROLE, EXECUTOR_ROLE) to Governor",
+    "id": "phase3-8",
+    "priority": "high",
+    "status": "pending"
+  },
+  {
+    "content": "Create contract ABIs for frontend integration",
+    "id": "phase3-9",
+    "priority": "high",
+    "status": "pending"
+  },
+  {
+    "content": "Add smart contract ABIs to frontend src/lib",
+    "id": "phase3-10",
+    "priority": "high",
+    "status": "pending"
+  },
+  {
+    "content": "Create ethers.js contract instances in frontend",
+    "id": "phase3-11",
+    "priority": "high",
+    "status": "pending"
+  },
+  {
+    "content": "Integrate contract calls with useMint hook",
+    "id": "phase3-12",
+    "priority": "high",
+    "status": "pending"
+  },
+  {
+    "content": "Integrate contract calls with escrow funding",
+    "id": "phase3-13",
+    "priority": "high",
+    "status": "pending"
+  },
+  {
+    "content": "Integrate contract calls with escrow release",
+    "id": "phase3-14",
+    "priority": "high",
+    "status": "pending"
+  },
+  {
+    "content": "Test smart contract functions (mint, fund, release)",
+    "id": "phase3-15",
+    "priority": "high",
+    "status": "pending"
+  },
+  {
+    "content": "Test frontend contract integration (end-to-end flow)",
+    "id": "phase3-16",
+    "priority": "high",
+    "status": "pending"
+  }
+]

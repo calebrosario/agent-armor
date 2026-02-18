@@ -1,301 +1,123 @@
-# Agentic Armor
+# Knowledge Base
 
-> A Docker-based task management system with concurrency, state persistence and multi-agent orchestration.
-
-## Quick Links
-
-- **Documentation**: [docs/](./docs/) - Complete API reference, user guide, and state machine diagrams
-- **API Reference**: [docs/API.md](./docs/API.md) - Complete API documentation
-- **User Guide**: [docs/USER_GUIDE.md](./docs/USER_GUIDE.md) - Tutorials and best practices
-- **State Machines**: [docs/diagrams/](./docs/diagrams/) - Complete system state machine diagrams
-
-## Overview
-
-Agentic Armor is a production-ready system for managing AI agent tasks with:
-
-- **Docker Integration**: Full lifecycle management for Docker containers
-- **Concurrency Control**: Optimistic locking for multi-agent workflows
-- **State Persistence**: 4-layer architecture (state, logs, decisions, checkpoints)
-- **Multi-Agent Orchestration**: Support for collaborative and exclusive task modes
-- **MCP Integration**: Model Context Protocol server for agent communication
-- **CLI Tools**: 13 command-line utilities for task management
-
-## Current Status
-
-**Version**: 0.1.0 (Alpha)
-**Phase**: Phase 2 - Integration & Alpha Release
-**Branch**: master
-
-### Completed Features
-
-✅ Phase 0: Deep Dive Research (100%)
-
-- Docker Engine API integration
-- Concurrency models with optimistic locking
-- Multi-layer persistence architecture
-- JSONL logging benchmarks
-
-✅ Phase 1: Core Infrastructure (100%)
-
-- TaskRegistry with PostgreSQL backend (Drizzle ORM)
-- LockManager with optimistic locking
-- MultiLayerPersistence with 4 layers
-- NetworkManager and VolumeManager
-- Resource monitoring and isolation
-- Crash recovery system
-
-✅ Phase 2: MVP Core (100%)
-
-- TaskLifecycle with state transitions
-- MCP Server with 8 tools
-- Hook system (6 hook types)
-- 13 CLI commands (task management, checkpoints, memory)
-- Integration and E2E tests
-- Complete documentation (README, API, User Guide, State Machines)
-
-✅ Phase 3: Monitoring & Metrics (100%)
-
-- Metrics collection system with counters, timers, and gauges
-- Health check system with database, Docker, disk, and memory checks
-- Performance tracking for CPU, memory, and disk usage
-- Dashboard data provider with aggregation and formatting
-- 2 CLI commands (metrics, health) with JSON and CSV export
-- Monitoring tests and documentation
+Centralized documentation for agentic development workflows, architecture decisions, and operational knowledge.
 
 ## Quick Start
 
-### Start the MCP Server
+### Using Obsidian
+1. Open Obsidian app
+2. File → Open Vault
+3. Select this folder (`~/KnowledgeBase`)
+4. Enable community plugins (Settings → Community Plugins → Turn on)
+5. Install recommended plugins:
+   - **Git** - Auto-commit changes
+   - **Templater** - Dynamic templates
+   - **Dataview** - Query your notes
+
+### Using CLI (obsidian-agent)
 
 ```bash
-npm start
+# Create an Architecture Decision Record
+obsidian-agent create-adr "Use Redis for caching"
+
+# Create a runbook
+obsidian-agent create-runbook "Database Failover Procedure"
+
+# Daily standup
+obsidian-agent daily-standup
+
+# Search knowledge base
+obsidian-agent search "auth flow"
+
+# Sync to git
+obsidian-agent git-sync
 ```
 
-### Use CLI Commands
+## Structure
+
+```
+KnowledgeBase/
+├── README.md          # This file
+├── Projects/          # Per-project documentation
+├── Runbooks/          # Operational procedures
+├── Architecture/      # System design and patterns
+├── Decisions/         # Architecture Decision Records (ADRs)
+├── Playbooks/         # Standard operating procedures
+└── Templates/         # Note templates
+```
+
+## Templates Available
+
+- **ADR** - Architecture Decision Record
+- **Runbook** - Operational procedures
+- **Project-Setup** - Project documentation
+- **Daily-Standup** - Daily standup notes
+- **Postmortem** - Incident postmortems
+
+## Creating Notes
+
+### From Obsidian GUI
+1. Cmd+N (New Note)
+2. Cmd+P → "Templater: Open Insert Template Modal"
+3. Select template
+
+### From Terminal (Agents)
+```bash
+obsidian-agent create-note "My Note" ADR
+```
+
+## Git Workflow
+
+This knowledge base is version controlled. Changes are automatically committed:
 
 ```bash
-# List all tasks
-npm run cli -- list-tasks
+# Manual sync
+obsidian-agent git-sync
 
-# Create a new task
-npm run cli -- create-task "My Task" --owner agent-1
+# Check status
+obsidian-agent git-status
 
-# View task history
-npm run cli -- task-history --task task-123
+# Or use git directly
+cd ~/KnowledgeBase
+git add .
+git commit -m "docs: add new decision"
+git push
 ```
 
-## Key Features
+## Search
 
-### 1. Task Lifecycle
+### In Obsidian
+- Cmd+O - Quick open
+- Cmd+Shift+F - Global search
+- `[[` - Link to existing notes
 
-Complete state machine with transitions:
-
-- pending → running (agent attaches)
-- running → completed (task finishes)
-- running → failed (error occurs)
-- pending → cancelled (user/system cancels)
-- any → deleted (cleanup)
-
-### 2. Concurrency Control
-
-Optimistic locking with two modes:
-
-- Exclusive: Single agent only
-- Collaborative: Multiple agents with conflict resolution
-
-### 3. Multi-Layer Persistence
-
-4 storage layers:
-
-- Layer 1: state.json (current state, fast access)
-- Layer 2: logs.jsonl (audit trail, append-only)
-- Layer 3: decisions.md (agent decisions, human-readable)
-- Layer 4: checkpoints/ (snapshots, point-in-time recovery)
-
-### 4. Hook System
-
-6 hook types for extensibility:
-
-- beforeTaskStart / afterTaskStart
-- beforeTaskComplete / afterTaskComplete
-- beforeTaskFail / afterTaskFail
-
-### 5. MCP Tools
-
-8 tools for task management:
-
-- create_task_sandbox, attach_agent_to_task
-- detach_agent_from_task, execute_in_task
-- list_tasks, get_task_status, cancel_task, delete_task
-
-### 6. CLI Commands
-
-15 commands organized by category:
-
-- 6 task management commands
-- 2 checkpoint commands
-- 5 memory commands
-- 2 monitoring commands (metrics, health)
-
+### From Terminal
 ```bash
-# Display metrics dashboard
-npm run cli -- metrics
-
-# Display metrics as JSON
-npm run cli -- metrics --json
-
-# Display metrics as CSV
-npm run cli -- metrics --csv
-
-# Display health check status
-npm run cli -- health
-
-# Display health with detailed information
-npm run cli -- health --detailed
-
-# Exit with error if any health check fails
-npm run cli -- health --fail-fast
+obsidian-agent search "query"
 ```
 
-## Documentation
+## Best Practices
 
-For detailed documentation, see:
+1. **Link everything** - Use `[[Note Name]]` to connect ideas
+2. **Tag consistently** - Use #adr, #runbook, #project tags
+3. **Daily standups** - Create daily notes for standups
+4. **ADRs for decisions** - Document architectural decisions
+5. **Git commit often** - Sync regularly
+6. **Templates** - Use templates for consistency
 
-- **[docs/README.md](./docs/README.md)** - Complete project documentation
-  - Installation instructions
-  - Architecture overview
-  - Configuration guide
-  - Common use cases
-  - Troubleshooting guide
+## Graph View
 
-- **[docs/API.md](./docs/API.md)** - Complete API reference
-  - All 8 MCP tools documented
-  - TaskLifecycle, TaskRegistry, MultiLayerPersistence APIs
-  - LockManager and Hook System APIs
-  - All data models and type definitions
-  - Request/response formats
-  - Error codes
+In Obsidian: 
+- Cmd+G - Open graph view to see connections
+- Shows visual relationships between notes
 
-- **[docs/USER_GUIDE.md](./docs/USER_GUIDE.md)** - Complete user guide
-  - Step-by-step tutorials
-  - All 13 CLI commands with examples
-  - Best practices and advanced patterns
-  - Troubleshooting guide
-  - FAQ section
+## Links
 
-- **[docs/diagrams/](./docs/diagrams/)** - Complete state machine diagrams
-  - Task Lifecycle state machine
-  - Lock Manager state machine
-  - Multi-Layer Persistence state machine
-  - Integration points and error recovery patterns
-
-## Performance
-
-**PostgreSQL (100K Tasks)**:
-
-- Batch Insert: ~180,000 ops/sec
-- Single Row Read: ~250,000 ops/sec
-- Database Size: ~25MB
-
-**SQLite (100K Tasks - Legacy)**:
-
-- Batch Insert: 212,319 ops/sec
-- Single Row Read: 302,724 ops/sec
-- Database Size: 23.36MB
-
-**JSONL (1M Entries)**:
-
-- Simple Append: 10,785 ops/sec
-- Batch Append: 377,060 ops/sec (35x faster)
-- File Size: 183MB
-
-**Lock Manager**:
-
-- Lock Acquisition: <1ms
-- Lock Throughput: 742K ops/sec
-- Conflict Detection: <5ms
-
-### PostgreSQL Database Setup
-
-OpenCode Tools uses PostgreSQL with Drizzle ORM for production-ready persistence.
-
-#### Start Test Database
-
-```bash
-# Start PostgreSQL test container
-docker compose -f docker-compose.test.yml up -d
-
-# Verify database is running
-docker ps | grep postgres
-```
-
-#### Environment Configuration
-
-Create a `.env` file or use the `.env.test` template:
-
-```env
-# Database URL for PostgreSQL
-DATABASE_URL=postgresql://localhost:5432/opencode
-
-# For testing
-DATABASE_URL=postgresql://localhost:5432/opencode_test
-```
-
-#### Connection Pool Configuration
-
-The database uses connection pooling for optimal performance:
-
-- Max connections: 20
-- Idle timeout: 30 seconds
-- Connection timeout: 2 seconds
-
-#### Database Migrations
-
-```bash
-# Generate migration from schema
-npm run db:generate
-
-# Run migrations
-npm run db:migrate
-
-# Push schema changes (development only)
-npm run db:push
-
-# Open Drizzle Studio for visual database management
-npm run db:studio
-```
-
-## Contributing
-
-### Development Workflow
-
-1. Create feature branch: `git checkout -b feature/my-feature`
-2. Make changes and test: `npm test`
-3. Type check: `npm run type-check`
-4. Lint: `npm run lint`
-5. Commit: `git commit -m "feat: add my feature"`
-6. Push: `git push origin feature/my-feature`
-7. Create Pull Request
-
-### Testing
-
-```bash
-# Run all tests (SQLite - legacy)
-npm test
-
-# Watch mode
-npm run test:watch
-
-# Coverage report
-npm run test:coverage
-
-# Run tests with PostgreSQL (current)
-npm run test:pg
-
-# Note: Ensure PostgreSQL is running before running test:pg
-docker compose -f docker-compose.test.yml up -d
-```
+- [Obsidian Help](https://help.obsidian.md/)
+- [Markdown Guide](https://www.markdownguide.org/)
+- [Agent Documentation](~/.config/opencode/Harness.md)
 
 ---
 
-**Version**: 0.1.0-alpha
-**Last Updated**: 2026-02-05
+*This knowledge base is maintained as part of the agentic development workflow.*
+*Last updated: $(date +%Y-%m-%d)*

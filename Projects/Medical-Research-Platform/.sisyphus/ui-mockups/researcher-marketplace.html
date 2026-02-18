@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health-Mesh - Researcher Marketplace</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .gradient-header { background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="gradient-header text-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <div class="text-2xl font-bold">Health-Mesh</div>
+                <span class="text-sm opacity-80">| Researcher Marketplace</span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <span class="text-sm">0xabcd...ef12</span>
+                <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-xs font-bold">RS</div>
+                <button class="text-sm hover:text-blue-200">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Search & Filters -->
+    <div class="max-w-7xl mx-auto px-4 py-6">
+        <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-4">
+                <div class="lg:col-span-2">
+                    <input type="text" placeholder="Search datasets, conditions, studies..." class="w-full border border-gray-300 rounded-lg py-3 px-4 focus:ring-2 focus:ring-blue-500">
+                </div>
+                <select class="border border-gray-300 rounded-lg py-3 px-4 focus:ring-2 focus:ring-blue-500">
+                    <option value="">All Data Types</option>
+                    <option value="diabetes">Diabetes</option>
+                    <option value="cardio">Cardiovascular</option>
+                    <option value="genomics">Genomics</option>
+                    <option value="cancer">Oncology</option>
+                </select>
+                <select class="border border-gray-300 rounded-lg py-3 px-4 focus:ring-2 focus:ring-blue-500">
+                    <option value="">All Regions</option>
+                    <option value="na">North America</option>
+                    <option value="eu">Europe</option>
+                    <option value="asia">Asia</option>
+                </select>
+                <select class="border border-gray-300 rounded-lg py-3 px-4 focus:ring-2 focus:ring-blue-500">
+                    <option value="">Sort by</option>
+                    <option value="recent">Most Recent</option>
+                    <option value="price-low">Price: Low to High</option>
+                    <option value="price-high">Price: High to Low</option>
+                </select>
+            </div>
+            <div class="text-sm text-gray-500 mt-3">
+                Found <span class="font-semibold text-gray-700">247</span> datasets available
+            </div>
+        </div>
+
+        <!-- Dataset Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <!-- Dataset Card 1 -->
+            <div class="bg-white rounded-xl shadow-sm hover:shadow-lg transition-shadow overflow-hidden border border-gray-200">
+                <div class="bg-gradient-to-br from-green-50 to-teal-50 p-4">
+                    <div class="flex items-center justify-between">
+                        <span class="px-2 py-1 bg-green-600 text-white rounded-full text-xs font-medium">HIPAA</span>
+                        <span class="text-xs text-gray-600">Jan 15, 2026</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-800 mt-3">Type 2 Diabetes - Patient Cohort A</h3>
+                </div>
+                <div class="p-4">
+                    <div class="space-y-3">
+                        <div class="flex items-center text-sm text-gray-600">
+                            <i class="fas fa-users mr-2"></i>
+                            <span><strong>5,234</strong> participants</span>
+                        </div>
+                        <div class="flex items-center text-sm text-gray-600">
+                            <i class="fas fa-calendar mr-2"></i>
+                            <span>Longitudinal study (5 years)</span>
+                        </div>
+                        <div class="flex items-center text-sm text-gray-600">
+                            <i class="fas fa-map-marker-alt mr-2"></i>
+                            <span>North America</span>
+                        </div>
+                        <div class="flex items-center text-sm text-gray-600">
+                            <i class="fas fa-file-medical mr-2"></i>
+                            <span>Blood glucose, A1C, medications</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between pt-4 border-t border-gray-200 mt-4">
+                        <div>
+                            <div class="text-xs text-gray-500 mb-1">Access Fee (30 days)</div>
+                            <div class="text-2xl font-bold text-blue-600">0.02 ETH</div>
+                        </div>
+                        <button class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg font-medium transition-colors">
+                            Request Access
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dataset Card 2 -->
+            <div class="bg-white rounded-xl shadow-sm hover:shadow-lg transition-shadow overflow-hidden border border-gray-200">
+                <div class="bg-gradient-to-br from-blue-50 to-indigo-50 p-4">
+                    <div class="flex items-center justify-between">
+                        <span class="px-2 py-1 bg-blue-600 text-white rounded-full text-xs font-medium">GDPR</span>
+                        <span class="text-xs text-gray-600">Dec 20, 2025</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-800 mt-3">Genetic Markers - Cancer Research</h3>
+                </div>
+                <div class="p-4">
+                    <div class="space-y-3">
+                        <div class="flex items-center text-sm text-gray-600">
+                            <i class="fas fa-users mr-2"></i>
+                            <span><strong>12,456</strong> participants</span>
+                        </div>
+                        <div class="flex items-center text-sm text-gray-600">
+                            <i class="fas fa-dna mr-2"></i>
+                            <span>Whole genome sequencing</span>
+                        </div>
+                        <div class="flex items-center text-sm text-gray-600">
+                            <i class="fas fa-map-marker-alt mr-2"></i>
+                            <span>Europe (multinational)</span>
+                        </div>
+                        <div class="flex items-center text-sm text-gray-600">
+                            <i class="fas fa-file-medical mr-2"></i>
+                            <span>SNP arrays, rare variants</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between pt-4 border-t border-gray-200 mt-4">
+                        <div>
+                            <div class="text-xs text-gray-500 mb-1">Access Fee (30 days)</div>
+                            <div class="text-2xl font-bold text-blue-600">0.03 ETH</div>
+                        </div>
+                        <button class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg font-medium transition-colors">
+                            Request Access
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dataset Card 3 -->
+            <div class="bg-white rounded-xl shadow-sm hover:shadow-lg transition-shadow overflow-hidden border border-gray-200">
+                <div class="bg-gradient-to-br from-purple-50 to-pink-50 p-4">
+                    <div class="flex items-center justify-between">
+                        <span class="px-2 py-1 bg-purple-600 text-white rounded-full text-xs font-medium">CCPA</span>
+                        <span class="text-xs text-gray-600">Jan 10, 2026</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-800 mt-3">Cardiovascular Outcomes - Post-Surgery</h3>
+                </div>
+                <div class="p-4">
+                    <div class="space-y-3">
+                        <div class="flex items-center text-sm text-gray-600">
+                            <i class="fas fa-users mr-2"></i>
+                            <span><strong>2,890</strong> participants</span>
+                        </div>
+                        <div class="flex items-center text-sm text-gray-600">
+                            <i class="fas fa-heartbeat mr-2"></i>
+                            <span>Echo, stress tests, medications</span>
+                        </div>
+                        <div class="flex items-center text-sm text-gray-600">
+                            <i class="fas fa-map-marker-alt mr-2"></i>
+                            <span>North America</span>
+                        </div>
+                        <div class="flex items-center text-sm text-gray-600">
+                            <i class="fas fa-file-medical mr-2"></i>
+                            <span>Echocardiograms, ECGs, labs</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between pt-4 border-t border-gray-200 mt-4">
+                        <div>
+                            <div class="text-xs text-gray-500 mb-1">Access Fee (30 days)</div>
+                            <div class="text-2xl font-bold text-blue-600">0.015 ETH</div>
+                        </div>
+                        <button class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg font-medium transition-colors">
+                            Request Access
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="flex justify-center items-center mt-8 space-x-2">
+            <button class="bg-white border border-gray-300 hover:border-gray-400 text-gray-700 py-2 px-4 rounded-lg">Previous</button>
+            <span class="text-gray-600">Page 1 of 25</span>
+            <button class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg">Next</button>
+        </div>
+    </div>
+
+    <!-- Floating Action Button -->
+    <button class="fixed bottom-6 right-6 bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-full shadow-lg flex items-center space-x-2 transition-colors">
+        <i class="fas fa-shopping-cart"></i>
+        <span>Cart (0)</span>
+    </button>
+</body>
+</html>

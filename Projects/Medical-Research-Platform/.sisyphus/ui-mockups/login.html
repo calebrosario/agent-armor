@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health-Mesh - Sign In</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #0d9488 0%, #06b6d4 50%, #059669 100%); }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen flex items-center justify-center">
+    <div class="max-w-md w-full mx-4">
+        <div class="bg-white rounded-2xl shadow-2xl p-8">
+            <!-- Logo and Title -->
+            <div class="text-center mb-8">
+                <div class="text-4xl font-bold text-gray-800 mb-2">Health-Mesh</div>
+                <p class="text-gray-600">Sign in to manage your health data</p>
+            </div>
+
+            <!-- No Wallet Needed Notice -->
+            <div class="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
+                <div class="flex items-start space-x-3">
+                    <div class="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white flex-shrink-0">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="font-semibold text-green-800 mb-1">No Wallet Knowledge Required</h3>
+                        <p class="text-sm text-green-700">Sign in with your Google or Apple account - we'll create your wallet automatically!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Social Login Buttons -->
+            <div class="space-y-3 mb-6">
+                <button class="w-full bg-white border-2 border-gray-300 hover:border-gray-400 text-gray-700 py-3 px-4 rounded-lg flex items-center justify-center space-x-3 transition-colors">
+                    <img src="https://www.google.com/favicon.ico" class="w-6 h-6" alt="Google">
+                    <span class="font-medium">Continue with Google</span>
+                </button>
+                <button class="w-full bg-white border-2 border-gray-300 hover:border-gray-400 text-gray-700 py-3 px-4 rounded-lg flex items-center justify-center space-x-3 transition-colors">
+                    <i class="fab fa-apple text-xl"></i>
+                    <span class="font-medium">Continue with Apple</span>
+                </button>
+                <button class="w-full bg-white border-2 border-gray-300 hover:border-gray-400 text-gray-700 py-3 px-4 rounded-lg flex items-center justify-center space-x-3 transition-colors">
+                    <i class="fab fa-facebook text-xl text-blue-600"></i>
+                    <span class="font-medium">Continue with Facebook</span>
+                </button>
+            </div>
+
+            <!-- Divider -->
+            <div class="relative mb-6">
+                <div class="absolute inset-0 flex items-center">
+                    <div class="w-full border-t border-gray-300"></div>
+                </div>
+                <div class="relative flex justify-center text-sm">
+                    <span class="px-2 bg-white text-gray-500">or continue with email</span>
+                </div>
+            </div>
+
+            <!-- Email Login Form -->
+            <form class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                    <input type="email" placeholder="you@example.com" class="w-full border border-gray-300 rounded-lg py-3 px-4 focus:ring-2 focus:ring-teal-500 focus:border-transparent">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                    <input type="password" placeholder="•••••••••••" class="w-full border border-gray-300 rounded-lg py-3 px-4 focus:ring-2 focus:ring-teal-500 focus:border-transparent">
+                </div>
+                <button type="submit" class="w-full bg-gradient-to-r from-teal-600 to-green-600 hover:from-teal-700 hover:to-green-700 text-white py-3 px-4 rounded-lg font-semibold transition-all">
+                    Sign In
+                </button>
+            </form>
+
+            <!-- Bottom Links -->
+            <div class="flex justify-between items-center text-sm mt-6">
+                <a href="#" class="text-teal-600 hover:text-teal-700">Forgot password?</a>
+                <a href="#" class="text-teal-600 hover:text-teal-700">Create account</a>
+            </div>
+
+            <!-- Security Notice -->
+            <div class="mt-8 pt-6 border-t border-gray-200">
+                <div class="flex items-start space-x-2 text-xs text-gray-500">
+                    <i class="fas fa-lock"></i>
+                    <span>Your data is protected with enterprise-grade security. Powered by Web3Auth non-custodial wallets.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

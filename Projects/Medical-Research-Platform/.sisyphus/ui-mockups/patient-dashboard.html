@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health-Mesh - Patient Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .gradient-header { background: linear-gradient(135deg, #0d9488 0%, #06b6d4 100%); }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="gradient-header text-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <div class="text-2xl font-bold">Health-Mesh</div>
+                <span class="text-sm opacity-80">| Patient Portal</span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <span class="text-sm">0x1234...5678</span>
+                <div class="w-8 h-8 rounded-full bg-teal-500 flex items-center justify-center text-xs font-bold">JD</div>
+                <button class="text-sm hover:text-teal-200">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            <!-- Welcome Card -->
+            <div class="lg:col-span-3 bg-white rounded-xl shadow-sm p-6">
+                <h1 class="text-2xl font-bold text-gray-800 mb-2">Welcome, Jane!</h1>
+                <p class="text-gray-600 mb-6">Your health data is secure and ready to share with researchers.</p>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-gradient-to-br from-teal-50 to-green-50 rounded-lg p-4 border border-teal-100">
+                        <div class="text-3xl font-bold text-teal-600">3</div>
+                        <div class="text-sm text-gray-600">Active Consents</div>
+                    </div>
+                    <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-4 border border-blue-100">
+                        <div class="text-3xl font-bold text-blue-600">$1,250</div>
+                        <div class="text-sm text-gray-600">Total Earnings</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="bg-white rounded-xl shadow-sm p-6">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4">Quick Actions</h2>
+                <div class="space-y-3">
+                    <button class="w-full bg-teal-600 hover:bg-teal-700 text-white py-3 px-4 rounded-lg flex items-center justify-center space-x-2">
+                        <i class="fas fa-file-contract"></i>
+                        <span>Update Consent</span>
+                    </button>
+                    <button class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg flex items-center justify-center space-x-2">
+                        <i class="fas fa-database"></i>
+                        <span>Manage Data</span>
+                    </button>
+                    <button class="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 px-4 rounded-lg flex items-center justify-center space-x-2">
+                        <i class="fas fa-share-nodes"></i>
+                        <span>Share Profile</span>
+                    </button>
+                    <button class="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 px-4 rounded-lg flex items-center justify-center space-x-2">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Wallet Balance -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div class="bg-white rounded-xl shadow-sm p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-lg font-semibold text-gray-800">Wallet Balance</h2>
+                    <button class="text-teal-600 hover:text-teal-700 text-sm">Refresh</button>
+                </div>
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div class="flex items-center space-x-2">
+                            <img src="https://cryptologos.cc/logos/ethereum-eth-logo.svg" class="w-6 h-6" alt="ETH">
+                            <span class="text-gray-700">Ethereum</span>
+                        </div>
+                        <span class="text-xl font-bold text-gray-800">0.045 ETH</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div class="flex items-center space-x-2">
+                            <div class="w-6 h-6 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs font-bold">$</div>
+                            <span class="text-gray-700">USDC</span>
+                        </div>
+                        <span class="text-xl font-bold text-gray-800">$125.00</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="bg-white rounded-xl shadow-sm p-6">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4">Recent Activity</h2>
+                <div class="space-y-4">
+                    <div class="flex items-start space-x-3 p-3 bg-green-50 rounded-lg border-l-4 border-green-500">
+                        <div class="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center text-white">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="text-sm font-medium text-gray-800">Consent Signed</div>
+                            <div class="text-xs text-gray-600">HIPAA Research Study #2024-001</div>
+                            <div class="text-xs text-gray-500">2 hours ago</div>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-3 p-3 bg-blue-50 rounded-lg border-l-4 border-blue-500">
+                        <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="text-sm font-medium text-gray-800">Data Purchased</div>
+                            <div class="text-xs text-gray-600">Mayo Clinic - Patient Records</div>
+                            <div class="text-xs text-gray-500">5 hours ago</div>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-3 p-3 bg-yellow-50 rounded-lg border-l-4 border-yellow-500">
+                        <div class="w-8 h-8 rounded-full bg-yellow-500 flex items-center justify-center text-white">
+                            <i class="fas fa-coins"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="text-sm font-medium text-gray-800">Payment Received</div>
+                            <div class="text-xs text-gray-600">Researcher purchased access (0.02 ETH)</div>
+                            <div class="text-xs text-gray-500">1 day ago</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Active Consents -->
+        <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-lg font-semibold text-gray-800">Active Consents</h2>
+                <button class="text-teal-600 hover:text-teal-700 text-sm">View All</button>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="text-left py-3 px-4 text-sm font-semibold text-gray-700">Study</th>
+                            <th class="text-left py-3 px-4 text-sm font-semibold text-gray-700">Type</th>
+                            <th class="text-left py-3 px-4 text-sm font-semibold text-gray-700">Status</th>
+                            <th class="text-left py-3 px-4 text-sm font-semibold text-gray-700">Expires</th>
+                            <th class="text-right py-3 px-4 text-sm font-semibold text-gray-700">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-gray-200">
+                            <td class="py-3 px-4 text-sm text-gray-800">HIPAA Research Study #2024-001</td>
+                            <td class="py-3 px-4"><span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">HIPAA</span></td>
+                            <td class="py-3 px-4"><span class="px-2 py-1 bg-teal-100 text-teal-800 rounded-full text-xs font-medium">Active</span></td>
+                            <td class="py-3 px-4 text-sm text-gray-600">Jan 15, 2026</td>
+                            <td class="py-3 px-4 text-right">
+                                <button class="text-red-600 hover:text-red-700 text-xs">Revoke</button>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-200">
+                            <td class="py-3 px-4 text-sm text-gray-800">GDPR Diabetes Study #2024-003</td>
+                            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">GDPR</span></td>
+                            <td class="py-3 px-4"><span class="px-2 py-1 bg-teal-100 text-teal-800 rounded-full text-xs font-medium">Active</span></td>
+                            <td class="py-3 px-4 text-sm text-gray-600">Feb 20, 2026</td>
+                            <td class="py-3 px-4 text-right">
+                                <button class="text-red-600 hover:text-red-700 text-xs">Revoke</button>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-200">
+                            <td class="py-3 px-4 text-sm text-gray-800">CCPA Genomics Project #2024-007</td>
+                            <td class="py-3 px-4"><span class="px-2 py-1 bg-purple-100 text-purple-800 rounded-full text-xs font-medium">CCPA</span></td>
+                            <td class="py-3 px-4"><span class="px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs font-medium">Pending</span></td>
+                            <td class="py-3 px-4 text-sm text-gray-600">Dec 10, 2025</td>
+                            <td class="py-3 px-4 text-right">
+                                <button class="text-teal-600 hover:text-teal-700 text-xs">Sign</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
