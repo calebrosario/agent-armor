@@ -309,27 +309,27 @@ export interface CheckpointTaskMetadata extends TaskMetadata {
  * These functions help ensure metadata objects conform to expected schemas.
  */
 
+// Common field types that all valid metadata must have
+// String fields
+const stringFields: (keyof TaskMetadata)[] = [
+  "taskId",
+  "agentId",
+  "description",
+  "tags",
+  "priority",
+  "workspacePath",
+  "containerId",
+  "networkId",
+  "checkpointId",
+];
+
 /**
  * Type guard to check if object is valid TaskMetadata
  */
 export function isTaskMetadata(value: unknown): value is TaskMetadata {
-  if (typeof value !== "object") {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
-
-  // Common field types that all valid metadata must have
-  // String fields
-  const stringFields: (keyof TaskMetadata)[] = [
-    "taskId",
-    "agentId",
-    "description",
-    "tags",
-    "priority",
-    "workspacePath",
-    "containerId",
-    "networkId",
-    "checkpointId",
-  ];
 
   // Record<string, unknown> field for arbitrary metadata
   if ("[key: string]: unknown" in value) {

@@ -1,8 +1,7 @@
 // Validation Layer for DB-to-Domain Conversions
 // Provides runtime type safety for converting database rows to domain objects
 
-import { TaskStatus, Task } from "../types";
-import { OpenCodeError } from "../util/error";
+import { TaskStatus, Task, OpenCodeError } from "../types";
 
 const VALID_STATUS_VALUES = [
   "pending",
@@ -15,7 +14,10 @@ const VALID_STATUS_VALUES = [
 export function validateTaskStatus(
   value: unknown,
 ): asserts value is TaskStatus {
-  if (typeof value !== "string" || !VALID_STATUS_VALUES.includes(value)) {
+  if (
+    typeof value !== "string" ||
+    !VALID_STATUS_VALUES.includes(value as TaskStatus)
+  ) {
     throw new OpenCodeError(
       "INVALID_TASK_STATUS",
       `Invalid task status: ${value}. Must be one of: ${VALID_STATUS_VALUES.join(", ")}`,
