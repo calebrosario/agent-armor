@@ -3,17 +3,20 @@
 
 import { logger } from "../../util/logger";
 import { BeforeTaskStartHook } from "../task-lifecycle";
-import {
-  createTaskBranch,
-  branchExists,
-  getWorkspacePath,
-} from "../../util/git-operations";
+import { createTaskBranch } from "../../util/git-operations";
 
 /**
  * Git Branch Conflicts Hook - Handles branch naming conflicts (Edge Case 6)
  *
- * Detects existing branches, creates unique names via git-operations.createTaskBranch,
- * logs resolution details, throws on failure.
+ * This is a specialized hook focused on branch conflict resolution.
+ * Internally uses createTaskBranch which handles:
+ * - Detecting existing branches before creation
+ * - Generating unique branch names on conflict (timestamp + random suffix)
+ * - Retry logic with max 10 attempts
+ *
+ * For simpler branch creation without conflict focus, use createPreTaskBranchCreatorHook.
+ *
+ * @returns BeforeTaskStartHook that creates a task branch with conflict handling
  */
 export function createGitBranchConflictsHook(): BeforeTaskStartHook {
   return async (taskId: string, agentId: string) => {
@@ -23,19 +26,7 @@ export function createGitBranchConflictsHook(): BeforeTaskStartHook {
     });
 
     try {
-      const workspacePath = getWorkspacePath(taskId);
-      const baseName = `task/${taskId}`;
-
-      const exists = await branchExists(workspacePath, baseName);
-
-      if (exists) {
-        logger.info("Branch already exists, will create unique name", {
-          taskId,
-          baseName,
-        });
-      }
-
-      const result = await createTaskBranch(taskId, workspacePath);
+      const result = await createTaskBranch(taskId);
 
       if (result.success) {
         logger.info("Branch created with conflict handling", {

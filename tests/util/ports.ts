@@ -3,50 +3,66 @@
 
 import net from "net";
 
-/**
- * Get an available port starting from a base port
- * @param startPort - Port to start checking from (default: 3000)
- * @returns Available port number
- */
-export async function getAvailablePort(
-  startPort: number = 3000,
-): Promise<number> {
-  return new Promise((resolve, reject) => {
+const MAX_PORT = 65535;
+const DEFAULT_MAX_ATTEMPTS = 1000;
+
+export interface PortOptions {
+  /** Port to start checking from (default: 3000) */
+  startPort?: number;
+  /** Maximum number of ports to try before giving up (default: 1000) */
+  maxAttempts?: number;
+}
+
+async function tryPort(port: number): Promise<number | null> {
+  return new Promise((resolve) => {
     const server = net.createServer();
 
-    server.once("error", (err: any) => {
+    server.once("error", (err: NodeJS.ErrnoException) => {
       if (err.code === "EADDRINUSE") {
         server.close();
-        resolve(getAvailablePort(startPort + 1));
+        resolve(null);
       } else {
-        reject(err);
+        resolve(null);
       }
     });
 
     server.once("listening", () => {
-      const port = (server.address() as net.AddressInfo).port;
       server.close(() => resolve(port));
     });
 
-    server.listen(startPort);
+    server.listen(port);
   });
 }
 
-/**
- * Get multiple available ports
- * @param count - Number of ports to allocate
- * @param startPort - Port to start checking from (default: 3000)
- * @returns Array of available ports
- */
+export async function getAvailablePort(
+  startPort: number = 3000,
+  maxAttempts: number = DEFAULT_MAX_ATTEMPTS,
+): Promise<number> {
+  const maxPort = Math.min(startPort + maxAttempts, MAX_PORT);
+
+  for (let port = startPort; port <= maxPort; port++) {
+    const result = await tryPort(port);
+    if (result !== null) {
+      return result;
+    }
+  }
+
+  throw new Error(
+    `No available port found after ${maxAttempts} attempts starting from ${startPort}`,
+  );
+}
+
 export async function getAvailablePorts(
   count: number,
   startPort: number = 3000,
 ): Promise<number[]> {
   const ports: number[] = [];
+  let currentPort = startPort;
 
   for (let i = 0; i < count; i++) {
-    const port = await getAvailablePort(startPort + i);
+    const port = await getAvailablePort(currentPort);
     ports.push(port);
+    currentPort = port + 1;
   }
 
   return ports;

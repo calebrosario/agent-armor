@@ -7,33 +7,62 @@ import {
   getSubmoduleStatus,
   hasSubmoduleConflicts,
   resolveSubmoduleConflict,
+  getWorkspacePath,
 } from "../../util/git-operations";
+
+/**
+ * Options for creating a git submodule conflicts hook
+ */
+export interface GitSubmoduleConflictsOptions {
+  /** Resolution strategy for conflicts (default: "merge") */
+  resolutionStrategy?: "merge" | "rebase" | "skip";
+  /** Path to the submodule relative to workspace (default: ".task-memory") */
+  submodulePath?: string;
+}
 
 /**
  * Git Submodule Conflicts Hook - Detects and resolves submodule conflicts (Edge Case 9)
  *
  * Checks submodule status (clean/dirty/diverged), resolves with configurable strategy.
+ *
+ * @param options - Configuration options
+ * @param options.resolutionStrategy - How to resolve conflicts: "merge", "rebase", or "skip"
+ * @param options.submodulePath - Path to submodule relative to workspace root
+ * @returns BeforeTaskStartHook that handles submodule conflicts
+ *
+ * @example
+ * // Default options
+ * const hook = createGitSubmoduleConflictsHook();
+ *
+ * @example
+ * // Custom options
+ * const hook = createGitSubmoduleConflictsHook({
+ *   resolutionStrategy: "rebase",
+ *   submodulePath: "libs/shared"
+ * });
  */
 export function createGitSubmoduleConflictsHook(
-  resolutionStrategy: "merge" | "rebase" | "skip" = "merge",
+  options: GitSubmoduleConflictsOptions = {},
 ): BeforeTaskStartHook {
+  const { resolutionStrategy = "merge", submodulePath = ".task-memory" } =
+    options;
+
   return async (taskId: string, agentId: string) => {
     logger.info("Checking for git submodule conflicts", {
       taskId,
       agentId,
       resolutionStrategy,
+      submodulePath,
     });
 
     try {
-      const workspacePath =
-        process.env.OPENCODE_WORKSPACE || `/tmp/opencode-worktrees/${taskId}`;
-      const taskMemoryPath = ".task-memory";
+      const workspacePath = getWorkspacePath(taskId);
 
-      const status = await getSubmoduleStatus(workspacePath, taskMemoryPath);
+      const status = await getSubmoduleStatus(workspacePath, submodulePath);
 
       logger.info("Submodule status", {
         taskId,
-        taskMemoryPath,
+        submodulePath,
         status,
       });
 
@@ -47,14 +76,14 @@ export function createGitSubmoduleConflictsHook(
       if (status === "error") {
         logger.error("Submodule error detected", {
           taskId,
-          taskMemoryPath,
+          submodulePath,
         });
         throw new Error("Submodule status check failed");
       }
 
       const hasConflicts = await hasSubmoduleConflicts(
         workspacePath,
-        taskMemoryPath,
+        submodulePath,
       );
 
       if (!hasConflicts) {
@@ -72,7 +101,7 @@ export function createGitSubmoduleConflictsHook(
 
       const result = await resolveSubmoduleConflict(
         workspacePath,
-        taskMemoryPath,
+        submodulePath,
         resolutionStrategy,
       );
 
